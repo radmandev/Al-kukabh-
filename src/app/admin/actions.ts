@@ -14,7 +14,7 @@ const done = () => revalidatePath("/", "layout");
 /* ---------- auth ---------- */
 export async function adminLogin(_: unknown, f: FormData) {
   const u = await db.user.findUnique({ where: { email: String(f.get("email") ?? "").toLowerCase().trim() } });
-  if (!u || u.role === "CUSTOMER" || !(await checkPassword(String(f.get("password") ?? ""), u.passwordHash))) return "Invalid email or password";
+  if (!u || u.role === "CUSTOMER" || !(await checkPassword(String(f.get("password") ?? "").replace(/[٠-٩]/g, (c) => String("٠١٢٣٤٥٦٧٨٩".indexOf(c))), u.passwordHash))) return "Invalid email or password";
   await startSession(u.id);
   redirect("/admin");
 }

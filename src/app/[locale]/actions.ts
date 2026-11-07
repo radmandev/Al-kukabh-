@@ -18,7 +18,7 @@ export async function subscribe(_: unknown, f: FormData) {
 export async function login(_: unknown, f: FormData) {
   const email = String(f.get("email") ?? "").toLowerCase().trim();
   const u = await db.user.findUnique({ where: { email } });
-  if (!u || !(await checkPassword(String(f.get("password") ?? ""), u.passwordHash))) return "invalidLogin";
+  if (!u || !(await checkPassword(String(f.get("password") ?? "").replace(/[٠-٩]/g, (c) => String("٠١٢٣٤٥٦٧٨٩".indexOf(c))), u.passwordHash))) return "invalidLogin";
   await startSession(u.id);
   redirect(String(f.get("next") || `/${f.get("locale")}/account`));
 }
