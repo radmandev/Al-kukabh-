@@ -7,7 +7,7 @@ import { Icon } from "@/components/Icon";
 type MM = { url: string; kind: string; poster?: string; alt?: string };
 type Slide = { desktop?: MM; mobile?: MM; eyebrow: string; heading: string; text: string; cta: string; link: string };
 
-const IMAGE_MS = 7000;
+const IMAGE_MS = 3000;
 const VIDEO_MAX_MS = 90000; // safety net if a video never fires "ended" (e.g. autoplay blocked)
 
 export function Hero({ slides }: { slides: Slide[] }) {
