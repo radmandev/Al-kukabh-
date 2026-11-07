@@ -44,7 +44,7 @@ html[dir="rtl"] .link-u { background-position: 100% 100%; }
 .reveal { animation: reveal 1.1s var(--ease-lux) both; }
 @keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 .kenburns { animation: kb 9s ease-out both; }
-@keyframes kb { from { transform: scale(1.08); } to { transform: scale(1); } }
+@keyframes kb { from { transform: scale(1.04); } to { transform: scale(1); } }
 
 .no-scrollbar { scrollbar-width: none; } .no-scrollbar::-webkit-scrollbar { display: none; }
 :focus-visible { outline: 1px solid var(--color-gold); outline-offset: 3px; }
