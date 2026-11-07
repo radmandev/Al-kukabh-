@@ -57,7 +57,7 @@ export function Hero({ slides }: { slides: Slide[] }) {
                 key={m.url} src={m.url} poster={m.poster} muted playsInline preload={j === 0 ? "auto" : "metadata"}
                 autoPlay={j === 0} loop={slides.length === 1}
                 onEnded={() => j === i && slides.length > 1 && next()}
-                className="absolute inset-0 h-full w-full object-cover" aria-label={m.alt}
+                className="absolute inset-0 h-full w-full object-cover object-[center_20%]" aria-label={m.alt}
               />
             ) : (
               <div className={`absolute inset-0 ${j === i ? "kenburns" : ""}`}>
@@ -77,9 +77,9 @@ export function Hero({ slides }: { slides: Slide[] }) {
         );
       })}
       {slides.length > 1 && (
-        <div className="absolute inset-x-0 bottom-8 flex items-center justify-center gap-3">
+        <div className="absolute inset-x-0 bottom-8 flex items-center justify-center gap-1.5 px-4 md:gap-3">
           {slides.map((_, j) => (
-            <button key={j} onClick={() => setI(j)} aria-label={`${j + 1}`} aria-current={j === i} className="h-6 w-10 py-3">
+            <button key={j} onClick={() => setI(j)} aria-label={`${j + 1}`} aria-current={j === i} className="h-6 w-6 py-3 md:w-10">
               <span className={`block h-px w-full transition ${j === i ? "bg-ivory" : "bg-ivory/35"}`} />
             </button>
           ))}
