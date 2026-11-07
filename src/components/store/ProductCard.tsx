@@ -10,6 +10,7 @@ import { useStore } from "./StoreProvider";
 import { QuickView } from "./QuickView";
 
 export function Price({ p, l, currency, className = "" }: { p: Pick<CardProduct, "price" | "salePrice">; l: Locale; currency: string; className?: string }) {
+  if (!p.price) return null; // ponytail: price 0 = not set yet in admin
   return (
     <span className={`flex flex-wrap items-baseline gap-2 ${className}`}>
       <span>{money(p.salePrice ?? p.price, currency, l)}</span>
