@@ -18,8 +18,12 @@ export function Hero({ slides }: { slides: Slide[] }) {
     <section className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink text-ivory" aria-roledescription="carousel" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {slides.map((s, j) => (
         <div key={j} className={`absolute inset-0 transition-opacity duration-[1.6s] ease-[var(--ease-lux)] ${j === i ? "opacity-100" : "pointer-events-none opacity-0"}`} aria-hidden={j !== i}>
-          <div className={`absolute inset-0 ${j === i ? "kenburns" : ""}`}>
-            <ResponsiveMedia desktop={s.desktop} mobile={s.mobile} priority={j === 0} />
+          {/* full photo, never cropped; a blurred copy fills the edges */}
+          <div className={`absolute inset-0 scale-110 blur-2xl brightness-[.55] ${j === i ? "kenburns" : ""}`} aria-hidden>
+            <ResponsiveMedia desktop={s.desktop} mobile={s.mobile} sizes="30vw" />
+          </div>
+          <div className="absolute inset-0">
+            <ResponsiveMedia desktop={s.desktop} mobile={s.mobile} priority={j === 0} fit="contain" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/20" />
           {j === i && (
