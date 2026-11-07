@@ -20,13 +20,15 @@ export function Header({ l, t, brand, collections, signedIn }: { l: Locale; t: T
   const count = lines.reduce((n, x) => n + x.qty, 0);
 
   useEffect(() => {
-    const f = () => setScrolled(window.scrollY > 40);
+    const f = () => setScrolled(window.scrollY > (isHome ? window.innerHeight * 0.85 : 40));
     f(); window.addEventListener("scroll", f, { passive: true });
     return () => window.removeEventListener("scroll", f);
-  }, []);
+  }, [isHome]);
   useEffect(() => { setDrawer(false); setSearch(false); setMega(false); }, [path]);
   useEffect(() => { document.body.style.overflow = drawer || search ? "hidden" : ""; }, [drawer, search]);
 
+  // transparent over the homepage slideshow; solid charcoal everywhere else
+  const overHero = isHome && !scrolled && !mega && !drawer;
   const other = l === "ar" ? "en" : "ar";
   const switchHref = `/${other}${path.slice(3)}`;
   const nav = [
@@ -44,20 +46,30 @@ export function Header({ l, t, brand, collections, signedIn }: { l: Locale; t: T
       {isHome && <div aria-hidden className="h-0" />}
       <header
         onMouseLeave={() => setMega(false)}
-        className={`${isHome ? "fixed" : "sticky"} inset-x-0 top-0 z-50 transition-colors duration-500 ${scrolled ? "shadow-[0_8px_30px_rgba(0,0,0,.35)]" : ""} border-b border-gold/50 bg-onyx/95 text-gold-soft backdrop-blur`}
+        className={`${isHome ? "fixed" : "sticky"} inset-x-0 top-0 z-50 border-b text-gold-soft transition-[background-color,border-color,box-shadow] duration-700 ${overHero ? "border-transparent bg-origin-border bg-gradient-to-b from-black/65 via-black/30 to-transparent" : "border-gold/50 bg-onyx/95 shadow-[0_8px_30px_rgba(0,0,0,.35)] backdrop-blur"}`}
       >
         <div className="mx-auto grid h-20 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-4 md:h-24 md:px-10">
-          <div className="flex items-center gap-4">
-            <button className="lg:hidden" onClick={() => setDrawer(true)} aria-label={t.menu}><Icon name="menu" /></button>
+          <div className="flex items-center gap-4 xl:gap-7">
+            <button className="xl:hidden" onClick={() => setDrawer(true)} aria-label={t.menu}><Icon name="menu" /></button>
             <button onClick={() => setSearch(true)} aria-label={t.search} className="flex items-center gap-2">
-              <Icon name="search" /><span className="tracked hidden text-[.68rem] md:inline">{t.search}</span>
+              <Icon name="search" /><span className="tracked hidden text-[.68rem] md:inline xl:hidden">{t.search}</span>
             </button>
+            <nav className="hidden items-center gap-6 xl:flex 2xl:gap-8" aria-label="Main">
+              {nav.slice(0, 4).map((n) => (
+                <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u whitespace-nowrap text-[.68rem] transition-colors hover:text-ivory">{n.label}</Link>
+              ))}
+            </nav>
           </div>
-          <Link href={`/${l}`} className="flex items-center gap-3" aria-label={brand.name}>
+          <Link href={`/${l}`} className="flex items-center px-6 xl:px-10" aria-label={brand.name}>
             <Image src={brand.logo} alt={brand.name} width={160} height={160} priority
-              className="h-16 w-16 rounded-full object-cover ring-2 ring-gold-soft shadow-[0_0_28px_rgba(214,189,138,.45)] transition-transform duration-500 hover:scale-105 md:h-[84px] md:w-[84px]" />
+              className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-gold-soft shadow-[0_0_28px_rgba(214,189,138,.45)] transition-transform duration-500 hover:scale-105 md:h-[84px] md:w-[84px]" />
           </Link>
           <div className="flex items-center justify-end gap-4 md:gap-5">
+            <nav className="me-4 hidden items-center gap-6 xl:flex 2xl:gap-8" aria-label="More">
+              {nav.slice(4).map((n) => (
+                <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u whitespace-nowrap text-[.68rem] transition-colors hover:text-ivory">{n.label}</Link>
+              ))}
+            </nav>
             <Link href={switchHref} onClick={() => (document.cookie = `lang=${other};path=/;max-age=31536000`)} className="tracked text-[.68rem]">{other === "ar" ? "عربي" : "EN"}</Link>
             <Link href={`/${l}/account`} aria-label={t.account} className="hidden sm:block"><Icon name="user" /></Link>
             <Link href={`/${l}/wishlist`} aria-label={t.wishlist} className="relative hidden sm:block">
@@ -69,13 +81,8 @@ export function Header({ l, t, brand, collections, signedIn }: { l: Locale; t: T
             </button>
           </div>
         </div>
-        <nav className="hidden justify-center gap-9 pb-4 lg:flex" aria-label="Main">
-          {nav.map((n) => (
-            <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u text-[.68rem] transition-colors hover:text-ivory">{n.label}</Link>
-          ))}
-        </nav>
         {mega && collections.length > 0 && (
-          <div className="absolute inset-x-0 top-full hidden border-b border-line bg-ivory text-ink lg:block reveal">
+          <div className="absolute inset-x-0 top-full hidden border-b border-line bg-ivory text-ink xl:block reveal">
             <div className="mx-auto grid max-w-[1400px] grid-cols-4 gap-6 px-10 py-10">
               {collections.map((c) => (
                 <Link key={c.slug} href={`/${l}/collections/${c.slug}`} className="group">
@@ -92,7 +99,7 @@ export function Header({ l, t, brand, collections, signedIn }: { l: Locale; t: T
       </header>
 
       {/* mobile drawer */}
-      <div className={`fixed inset-0 z-[60] lg:hidden ${drawer ? "" : "pointer-events-none"}`} aria-hidden={!drawer}>
+      <div className={`fixed inset-0 z-[60] xl:hidden ${drawer ? "" : "pointer-events-none"}`} aria-hidden={!drawer}>
         <div onClick={() => setDrawer(false)} className={`absolute inset-0 bg-black/40 transition-opacity duration-500 ${drawer ? "opacity-100" : "opacity-0"}`} />
         <div className={`absolute inset-y-0 start-0 flex w-[86%] max-w-sm flex-col bg-ivory transition-transform duration-500 ease-[var(--ease-lux)] ${drawer ? "translate-x-0" : l === "ar" ? "translate-x-full" : "-translate-x-full"}`}>
           <div className="flex h-20 items-center justify-between border-b border-gold/40 bg-onyx px-5 text-gold-soft">
