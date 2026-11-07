@@ -24,7 +24,18 @@ function Head({ d, l, center = true, light }: { d: D; l: Locale; center?: boolea
     <div className={`${center ? "mx-auto text-center" : ""} max-w-2xl px-6 md:px-10`}>
       {eyebrow && <p className={`eyebrow ${light ? "text-gold-soft" : "text-gold"}`}>{eyebrow}</p>}
       {title && <h2 className="display mt-3 text-4xl md:text-5xl">{title}</h2>}
+      {title && <Ornament center={center} />}
       {text && <p className={`mt-5 whitespace-pre-line text-sm leading-7 md:text-base md:leading-8 ${light ? "text-ivory/70" : "text-stone"}`}>{text}</p>}
+    </div>
+  );
+}
+/** gold rule + star: the "kawkaba" mark under every title */
+function Ornament({ center = true }: { center?: boolean }) {
+  return (
+    <div aria-hidden className={`mt-5 flex items-center gap-3 text-gold ${center ? "justify-center" : ""}`}>
+      <span className="h-px w-14 bg-gradient-to-l from-gold/70 to-transparent" />
+      <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z" /></svg>
+      <span className="h-px w-14 bg-gradient-to-r from-gold/70 to-transparent" />
     </div>
   );
 }
@@ -41,7 +52,7 @@ async function Products({ d, l, t, currency }: { d: D } & Ctx) {
     : await findProducts({ new: { isNew: true }, featured: { isFeatured: true }, limited: { isLimited: true }, ready: { isReady: true } }[src] ?? {}, { createdAt: "desc" }, take);
   if (!ps.length) return null;
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-24 md:py-36">
       <Head d={d} l={l} />
       <div className="mt-12">
         <Rail label={L(d, "title", l)}>
@@ -77,7 +88,7 @@ async function Collections({ d, l, t }: { d: D } & Ctx) {
     </Link>
   );
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-24 md:py-36">
       <Head d={d} l={l} />
       <div className="mt-12 space-y-4 px-4 md:space-y-6 md:px-10">
         <Tile c={first} big />
@@ -91,7 +102,7 @@ function Occasions({ d, l }: { d: D } & Ctx) {
   const items = list(d, "items");
   if (!items.length) return null;
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-24 md:py-36">
       <Head d={d} l={l} />
       <div className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 md:grid md:grid-cols-[repeat(auto-fit,minmax(0,1fr))] md:gap-6 md:px-10">
         {items.map((it, i) => (
@@ -110,7 +121,7 @@ async function Ready({ d, l, t, currency }: { d: D } & Ctx) {
   const ps = await findProducts({ isReady: true, availability: { not: "out_of_stock" } }, { createdAt: "desc" }, Number(d.limit) || 4);
   if (!ps.length) return null;
   return (
-    <section className="bg-sand py-20 md:py-28">
+    <section className="bg-sand py-24 md:py-36">
       <Head d={d} l={l} />
       <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 px-4 md:gap-x-6 md:px-10 lg:grid-cols-4">
         {ps.map((p) => <ProductCard key={p.id} p={toCard(p)} l={l} t={t} currency={currency} showDelivery />)}
@@ -155,7 +166,7 @@ function Campaign({ d, l }: { d: D } & Ctx) {
     );
   }
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-24 md:py-36">
       <Head d={d} l={l} />
       <div className={`mt-12 grid gap-4 px-4 md:gap-6 md:px-10 ${layout === "split" ? "md:grid-cols-2" : "grid-cols-2 md:grid-cols-3"}`}>
         {items.map((it, i) => (
@@ -173,14 +184,14 @@ function Campaign({ d, l }: { d: D } & Ctx) {
 function Values({ d, l }: { d: D } & Ctx) {
   const items = list(d, "items");
   return (
-    <section className="border-y border-line py-20 md:py-24">
-      <Head d={d} l={l} />
-      <div className="mx-auto mt-12 grid max-w-[1300px] gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
+    <section className="border-y border-gold/40 bg-onyx py-24 text-ivory md:py-32">
+      <Head d={d} l={l} light />
+      <div className="mx-auto mt-16 grid max-w-[1200px] gap-px bg-gold/20 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((it, i) => (
-          <div key={i} className="bg-ivory px-8 py-10 text-center">
-            <span className="display text-2xl text-gold">{String(i + 1).padStart(2, "0")}</span>
-            <h3 className="display mt-3 text-2xl">{L(it, "title", l)}</h3>
-            <p className="mx-auto mt-3 max-w-xs text-sm leading-7 text-stone">{L(it, "text", l)}</p>
+          <div key={i} className="bg-onyx px-8 py-12 text-center">
+            <span className="display text-3xl text-gold-soft">{String(i + 1).padStart(2, "0")}</span>
+            <h3 className="display mt-4 text-2xl">{L(it, "title", l)}</h3>
+            <p className="mx-auto mt-3 max-w-xs text-sm leading-7 text-ivory/60">{L(it, "text", l)}</p>
           </div>
         ))}
       </div>
@@ -189,7 +200,16 @@ function Values({ d, l }: { d: D } & Ctx) {
 }
 
 function Text({ d, l }: { d: D } & Ctx) {
-  return <section className="py-20 md:py-32"><Head d={d} l={l} /><Cta d={d} l={l} /></section>;
+  const eyebrow = L(d, "eyebrow", l), title = L(d, "title", l), text = L(d, "text", l);
+  return (
+    <section className="mx-auto max-w-3xl px-6 pb-4 pt-24 text-center md:pb-8 md:pt-36">
+      {eyebrow && <p className="eyebrow text-gold">{eyebrow}</p>}
+      {title && <h2 className="display mt-5 text-4xl leading-tight md:text-6xl">{title}</h2>}
+      <Ornament />
+      {text && <p className="mx-auto mt-8 max-w-xl whitespace-pre-line text-base leading-8 text-stone md:text-lg md:leading-9">{text}</p>}
+      <Cta d={d} l={l} />
+    </section>
+  );
 }
 
 export async function RenderSection({ type, data, ...ctx }: { type: string; data: string } & Ctx) {
