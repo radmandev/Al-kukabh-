@@ -15,6 +15,20 @@ export function Hero({ slides }: { slides: Slide[] }) {
   const [paused, setPaused] = useState(false);
   const [mobile, setMobile] = useState(false);
   const vids = useRef<(HTMLVideoElement | null)[]>([]);
+  // desktop: 3 portrait photos side by side, sliding one step at a time (seamless loop)
+  const strip = slides.length >= 3 && slides.every((s) => s.desktop?.kind !== "video");
+  const [pos, setPos] = useState(0);
+  const [snap, setSnap] = useState(false);
+  const prev = useRef(0);
+  useEffect(() => {
+    const p = prev.current; prev.current = i;
+    if (i === 0 && p === slides.length - 1) {
+      setPos(slides.length);
+      const t = setTimeout(() => { setSnap(true); setPos(0); requestAnimationFrame(() => requestAnimationFrame(() => setSnap(false))); }, 1300);
+      return () => clearTimeout(t);
+    }
+    setPos(i);
+  }, [i, slides.length]);
   const next = () => setI((x) => (x + 1) % slides.length);
 
   useEffect(() => {
@@ -47,6 +61,17 @@ export function Hero({ slides }: { slides: Slide[] }) {
   if (!slides.length) return null;
   return (
     <section className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink text-ivory" aria-roledescription="carousel">
+      {strip && (
+        <div className="absolute inset-0 hidden md:block" dir="ltr">
+          <div className={`flex h-full ${snap ? "" : "transition-transform duration-[1.2s] ease-[var(--ease-lux)]"}`} style={{ transform: `translateX(-${(pos * 100) / 3}%)` }}>
+            {[...slides, ...slides.slice(0, 3)].map((s, k) => (
+              <div key={k} className="relative h-full w-1/3 shrink-0 border-x border-black/20">
+                <ResponsiveMedia desktop={s.desktop} priority={k < 3} sizes="34vw" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {slides.map((s, j) => {
         const m = pick(s);
         return (
@@ -60,7 +85,7 @@ export function Hero({ slides }: { slides: Slide[] }) {
                 className="absolute inset-0 h-full w-full object-cover object-[center_20%]" aria-label={m.alt}
               />
             ) : (
-              <div className={`absolute inset-0 ${j === i ? "kenburns" : ""}`}>
+              <div className={`absolute inset-0 ${j === i ? "kenburns" : ""} ${strip ? "md:hidden" : ""}`}>
                 <ResponsiveMedia desktop={s.desktop} mobile={s.mobile} priority={j === 0} className="object-[center_30%]" />
               </div>
             )}
