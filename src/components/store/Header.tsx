@@ -52,11 +52,11 @@ export function Header({ l, t, brand, collections, signedIn }: { l: Locale; t: T
           <div className="flex items-center gap-4 xl:gap-7">
             <button className="xl:hidden" onClick={() => setDrawer(true)} aria-label={t.menu}><Icon name="menu" /></button>
             <button onClick={() => setSearch(true)} aria-label={t.search} className="flex items-center gap-2">
-              <Icon name="search" /><span className="tracked hidden text-[.68rem] md:inline xl:hidden">{t.search}</span>
+              <Icon name="search" /><span className="tracked hidden text-[.68rem] font-bold md:inline xl:hidden">{t.search}</span>
             </button>
             <nav className="hidden items-center gap-6 xl:flex 2xl:gap-8" aria-label="Main">
               {nav.slice(0, 4).map((n) => (
-                <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u whitespace-nowrap text-[.68rem] transition-colors hover:text-ivory">{n.label}</Link>
+                <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-colors hover:text-ivory">{n.label}</Link>
               ))}
             </nav>
           </div>
@@ -67,10 +67,10 @@ export function Header({ l, t, brand, collections, signedIn }: { l: Locale; t: T
           <div className="flex items-center justify-end gap-4 md:gap-5">
             <nav className="me-4 hidden items-center gap-6 xl:flex 2xl:gap-8" aria-label="More">
               {nav.slice(4).map((n) => (
-                <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u whitespace-nowrap text-[.68rem] transition-colors hover:text-ivory">{n.label}</Link>
+                <Link key={n.href} href={n.href} onMouseEnter={() => setMega(!!n.mega)} className="tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-colors hover:text-ivory">{n.label}</Link>
               ))}
             </nav>
-            <Link href={switchHref} onClick={() => (document.cookie = `lang=${other};path=/;max-age=31536000`)} className="tracked text-[.68rem]">{other === "ar" ? "عربي" : "EN"}</Link>
+            <Link href={switchHref} onClick={() => (document.cookie = `lang=${other};path=/;max-age=31536000`)} className="tracked text-[.68rem] font-bold">{other === "ar" ? "عربي" : "EN"}</Link>
             <Link href={`/${l}/account`} aria-label={t.account} className="hidden sm:block"><Icon name="user" /></Link>
             <Link href={`/${l}/wishlist`} aria-label={t.wishlist} className="relative hidden sm:block">
               <Icon name="heart" />{wish.length > 0 && <span className="absolute -end-1.5 -top-1 h-1.5 w-1.5 rounded-full bg-gold-soft" />}
