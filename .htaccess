@@ -1,0 +1,8 @@
+# For hosts where the domain points at this folder instead of public/:
+# serve everything from public/ and keep app/, database/, uploads/ and config.php private.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(app|database|resources|uploads|node_modules)(/|$) - [F,L]
+  RewriteRule ^(config|config\.example)\.php$ - [F,L]
+  RewriteRule ^((?!public/).*)$ public/$1 [L]
+</IfModule>
