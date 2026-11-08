@@ -76,21 +76,33 @@ function save_upload(array $f): array
 {
     if (($f['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) throw new RuntimeException(upload_error((int) $f['error']));
     if ($f['size'] > UPLOAD_MAX) throw new RuntimeException('File too large (max 200MB)');
-    $mime = (string) (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']);
+    return store_media_file($f['tmp_name'], true);
+}
+
+/**
+ * Process a file into the media library. $uploaded = it came from $_FILES (moved), otherwise it is copied
+ * (used by database/seed.php to import public/brand). $extra overrides columns such as altAr / altEn / posterId.
+ */
+function store_media_file(string $src, bool $uploaded = false, array $extra = []): array
+{
+    $mime = (string) (new finfo(FILEINFO_MIME_TYPE))->file($src);
     $t = UPLOAD_TYPES[$mime] ?? null;
     if (!$t) throw new RuntimeException('Unsupported file type: ' . ($mime ?: 'unknown'));
     [$ext, $kind] = $t;
     $dir = upload_dir();
     if (!is_dir($dir) && !mkdir($dir, 0775, true)) throw new RuntimeException('Upload folder is not writable');
     $width = $height = null;
+    $keep = function (string $dest) use ($src, $uploaded) {
+        ($uploaded ? move_uploaded_file($src, $dest) : copy($src, $dest)) || throw new RuntimeException('Could not store file');
+    };
 
     if ($kind === 'image') {
-        if (!@getimagesize($f['tmp_name'])) throw new RuntimeException('Not a valid image');
-        $animatedWebp = $mime === 'image/webp' && str_contains((string) file_get_contents($f['tmp_name'], false, null, 0, 4096), 'ANIM');
+        if (!@getimagesize($src)) throw new RuntimeException('Not a valid image');
+        $animatedWebp = $mime === 'image/webp' && str_contains((string) file_get_contents($src, false, null, 0, 4096), 'ANIM');
         $reencode = in_array($mime, ['image/jpeg', 'image/png', 'image/webp'], true) && !$animatedWebp && function_exists('imagewebp');
         if ($reencode) {
             @ini_set('memory_limit', '512M');
-            $im = gd_load($f['tmp_name'], $mime, 2800);
+            $im = gd_load($src, $mime, 2800);
             if (!$im) throw new RuntimeException('Could not read image');
             $ext = 'webp';
             $mime = 'image/webp';
@@ -98,12 +110,12 @@ function save_upload(array $f): array
             imagewebp($im, "$dir/$name", 88);
         } else {
             $name = uuid4() . ".$ext";
-            move_uploaded_file($f['tmp_name'], "$dir/$name") || throw new RuntimeException('Could not store file');
+            $keep("$dir/$name");
         }
         [$width, $height] = @getimagesize("$dir/$name") ?: [null, null];
     } else {
         $name = uuid4() . ".$ext";
-        move_uploaded_file($f['tmp_name'], "$dir/$name") || throw new RuntimeException('Could not store file');
+        $keep("$dir/$name");
     }
 
     $m = [
@@ -111,6 +123,7 @@ function save_upload(array $f): array
         'width' => $width, 'height' => $height, 'size' => (int) filesize("$dir/$name"),
         'altAr' => '', 'altEn' => '', 'posterId' => null, 'createdAt' => now(),
     ];
+    $m = array_merge($m, array_intersect_key($extra, array_flip(['altAr', 'altEn', 'posterId'])));
     insert('media', $m);
     return $m;
 }

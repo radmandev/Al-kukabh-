@@ -15,7 +15,8 @@ php -S localhost:8000 -t public public/index.php
 ```
 
 Open http://localhost:8000 · admin: http://localhost:8000/admin (`admin_email` / `admin_password` from `config.php`). **Change before going live.**
-Demo images are brand-toned SVG placeholders. Replace them in **Admin → Media / Products / Homepage**.
+The seed imports the photos and videos in `public/brand/` into the media library and builds the catalog and homepage from them.
+Product names, prices and texts are starting points: edit them in **Admin → Products**.
 Note: `php database/seed.php` wipes products, collections, categories, sections and media (not orders/users/settings).
 
 ## Deploy to shared hosting (cPanel, Hostinger, …)
