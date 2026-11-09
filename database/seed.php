@@ -92,6 +92,7 @@ $luluQ = brand_quads('videos/WhatsApp Image 2026-11-06 at 5.10.35 PM.jpeg', 0.01
     ['وردة مطرزة بالخرز والترتر', 'Beaded, sequinned flower'], ['أكمام شيفون مطرزة', 'Embroidered chiffon sleeve'],
     ['ورود على الصدر', 'Flowers across the front'], ['تطريز على الكتف', 'Embroidery at the shoulder'],
 ]);
+$laceFull = brand('videos/WhatsApp Image 2026-11-09 at 1.43.17 PM.jpeg', 'عباية دانتيل سوداء بأطراف مخرّمة', 'Black all-over lace abaya with scalloped edges');
 $laceP = brand('videos/Opulent black lace abaya portrait.png', 'عباية سوداء بأكمام دانتيل مطرزة', 'Black abaya with embroidered lace sleeves');
 $laceQ = brand_quads('Gemini_Generated_Image_u8cfceu8cfceu8cf.jpeg', 0.01, [
     ['دانتيل على الأكمام', 'Lace at the sleeves'], ['شريط دانتيل أمامي', 'Lace front panel'],
@@ -162,7 +163,7 @@ $products = [
         'descAr' => 'عباية سوداء انسيابية تزيّن أطرافها وأكمامها دانتيل ناعم.',
         'descEn' => 'A flowing black abaya finished with delicate lace at the hem and sleeves.',
         'detailsAr' => "دانتيل على الأطراف\nأكمام دانتيل\nقصة انسيابية", 'detailsEn' => "Lace hem\nLace sleeves\nFlowing cut",
-        'gallery' => [$lace1, $laceP, $lace2, $lace3, ...$laceQ], 'collection' => 'lace', 'category' => 'wedding',
+        'gallery' => [$laceFull, $lace1, $laceP, $lace2, $lace3, ...$laceQ], 'collection' => 'lace', 'category' => 'wedding',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => false, 'isReady' => true,
         'deliveryAr' => 'تُشحن خلال 24 ساعة', 'deliveryEn' => 'Ships within 24 hours',
     ],
