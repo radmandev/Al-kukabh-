@@ -243,7 +243,7 @@ function store_policy(string $l, string $slug): never
     $t = dict($l);
     $body = L(settings()['policies'], $slug, $l) ?: '—';
     $html = '<article class="mx-auto max-w-2xl px-6 py-20 md:py-28"><h1 class="display text-center text-4xl md:text-5xl">' . e($t[$map[$slug]]) . '</h1>'
-        . '<div class="mt-12 whitespace-pre-line text-sm leading-8 text-stone">' . e($body) . '</div></article>';
+        . '<div class="mt-12 whitespace-pre-line text-[15px] leading-8 text-ink md:text-base md:leading-9">' . e($body) . '</div></article>';
     store_page($l, $html, ['title' => $t[$map[$slug]]]);
 }
 
