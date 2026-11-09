@@ -28,7 +28,9 @@
 
 html[lang="ar"] { --font-display: var(--f-display-ar), serif; --font-sans: var(--f-sans-ar), system-ui, sans-serif; }
 
-body { background: var(--color-ivory); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+/* cream marble with gold-leaf veins behind every ivory/sand area (seamless 1200px tile, generated) */
+body:not(.admin), .bg-sand { background-image: url(marble.webp); background-size: 1200px 1200px; background-repeat: repeat; }
+body { background-color: var(--color-ivory); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 ::selection { background: var(--color-gold-soft); color: var(--color-ink); }
 
 .eyebrow { font-size: .7rem; text-transform: uppercase; letter-spacing: .28em; }

@@ -19,7 +19,7 @@ if ($u['role'] === 'ADMIN') array_push($links, ['/admin/settings', 'Settings'], 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Jost:wght@300;400;500;700&display=swap">
 <link rel="stylesheet" href="/assets/app.css?v=<?= @filemtime(ROOT . '/public/assets/app.css') ?>">
 </head>
-<body class="min-h-screen bg-[#f4f2ee] text-ink">
+<body class="admin min-h-screen bg-[#f4f2ee] text-ink">
 <div class="md:grid md:grid-cols-[230px_1fr]">
   <aside class="bg-ink text-ivory md:sticky md:top-0 md:h-screen md:overflow-y-auto">
     <div class="flex items-center gap-3 p-5">
