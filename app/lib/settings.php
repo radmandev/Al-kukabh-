@@ -9,8 +9,8 @@ function default_settings(): array
             'aboutEn' => 'A house of luxury abayas celebrating quiet elegance and masterful craft — every piece composed with care, made for you.',
             'logoUrl' => '/brand/logo.jpg',
         ],
-        'contact' => ['email' => 'care@alkawkaba.com', 'phone' => '', 'whatsapp' => '', 'addressAr' => '', 'addressEn' => ''],
-        'social' => ['instagram' => '', 'tiktok' => '', 'snapchat' => '', 'x' => ''],
+        'contact' => ['email' => 'alkawkabahabaya@gmail.com', 'phone' => '', 'whatsapp' => '+967781519343', 'addressAr' => '', 'addressEn' => ''],
+        'social' => ['instagram' => 'https://www.instagram.com/alkawkabah_abaya', 'tiktok' => '', 'snapchat' => '', 'x' => ''],
         'currency' => 'SAR',
         'shipping' => ['flat' => 30, 'freeOver' => 500, 'countries' => 'SA,AE,KW,QA,BH,OM'],
         'payments' => [

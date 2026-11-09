@@ -6,6 +6,7 @@ function icon(string $name, string $class = 'h-5 w-5', bool $filled = false): st
 {
     static $P = [
         'search' => 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm10 2-4.35-4.35',
+        'instagram' => 'M7 2.5h10A4.5 4.5 0 0 1 21.5 7v10a4.5 4.5 0 0 1-4.5 4.5H7A4.5 4.5 0 0 1 2.5 17V7A4.5 4.5 0 0 1 7 2.5Zm5 5.5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm5.25-1.75h.01',
         'user' => 'M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm-8 9c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5',
         'bag' => 'M5 8h14l-1 13H6L5 8Zm4 0V6a3 3 0 0 1 6 0v2',
         'heart' => 'M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z',
@@ -107,6 +108,62 @@ function product_grid(array $ps, string $l, string $currency): string
     return $out . '</div>';
 }
 
+/** WhatsApp brand glyph (filled). */
+function wa_icon(string $class = 'h-6 w-6'): string
+{
+    return '<svg viewBox="0 0 24 24" class="' . e($class) . '" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41Z"/></svg>';
+}
+
+/** Digits-only WhatsApp number from settings ('' when not set). */
+function wa_number(): string
+{
+    return preg_replace('/\D/', '', (string) (settings()['contact']['whatsapp'] ?? ''));
+}
+
+/** wa.me deep link (opens the app on phones, WhatsApp Web on desktop), optionally with a prefilled message. */
+function wa_link(string $text = ''): string
+{
+    $n = wa_number();
+    return $n === '' ? '' : 'https://wa.me/' . $n . ($text !== '' ? '?text=' . rawurlencode($text) : '');
+}
+
+/** Absolute URL for links inside WhatsApp messages (site_url in config, else the current host). */
+function abs_url(string $path): string
+{
+    $site = rtrim((string) config('site_url', ''), '/');
+    if ($site === '' || str_contains($site, 'localhost')) {
+        $site = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
+    }
+    return $site . $path;
+}
+
+/** The order as a WhatsApp message: pieces (with product link → photo preview), size, colour, qty, and the customer's details. */
+function wa_order_message(array $o, string $l): string
+{
+    $ar = $l === 'ar';
+    $f = fn (float $v) => money($v, $o['currency'], $l);
+    $lines = [$ar ? '✨ طلب جديد من موقع الكوكبة للعبايات' : '✨ New order from Al Kawkaba Abayas', ($ar ? 'رقم الطلب: ' : 'Order: ') . $o['number'], ''];
+    foreach (jdecode($o['items'], []) as $i => $x) {
+        $lines[] = ($i + 1) . ') ' . ($ar ? $x['nameAr'] : $x['nameEn']);
+        $lines[] = ($ar ? 'المقاس: ' : 'Size: ') . ($x['size'] ?: '—') . ' | ' . ($ar ? 'اللون: ' : 'Colour: ') . ($x['color'] ?: '—') . ' | ' . ($ar ? 'الكمية: ' : 'Qty: ') . $x['qty'];
+        if ((float) $x['price'] > 0) $lines[] = ($ar ? 'السعر: ' : 'Price: ') . $f($x['price'] * $x['qty']);
+        $lines[] = ($ar ? 'العباية: ' : 'Abaya: ') . abs_url('/' . $l . '/product/' . rawurlencode($x['slug']));
+        if (!empty($x['image'])) $lines[] = ($ar ? 'الصورة: ' : 'Photo: ') . abs_url($x['image']);
+        $lines[] = '';
+    }
+    if ((float) $o['total'] > 0) $lines[] = ($ar ? 'الإجمالي: ' : 'Total: ') . $f($o['total']);
+    $lines[] = '';
+    $lines[] = $ar ? '👤 بيانات العميلة' : '👤 Customer';
+    $lines[] = ($ar ? 'الاسم: ' : 'Name: ') . $o['name'];
+    $lines[] = ($ar ? 'الجوال: ' : 'Phone: ') . $o['phone'];
+    $lines[] = ($ar ? 'البريد: ' : 'Email: ') . $o['email'];
+    $lines[] = ($ar ? 'العنوان: ' : 'Address: ') . $o['address'] . '، ' . $o['city'] . '، ' . $o['country'];
+    $pm = array_column(payment_methods(settings()), null, 'id')[$o['paymentMethod']] ?? null;
+    $lines[] = ($ar ? 'الدفع: ' : 'Payment: ') . ($pm ? L($pm, 'label', $l) : $o['paymentMethod']);
+    if (trim((string) $o['notes']) !== '') $lines[] = ($ar ? 'ملاحظات: ' : 'Notes: ') . $o['notes'];
+    return implode("\n", $lines);
+}
+
 /** Size / colour / qty selection + Add to bag, Buy now, Wishlist (behaviour in store.js). */
 function add_to_bag(array $p, string $l, bool $compact = false): string
 {
@@ -153,6 +210,9 @@ function add_to_bag(array $p, string $l, bool $compact = false): string
     <button type="button" data-wish="<?= e($p['id']) ?>" aria-pressed="false" aria-label="<?= e($t['addToWishlist']) ?>" class="border border-line px-4 hover:border-ink"><?= icon('heart') ?></button>
   </div>
   <?php if (!$compact && !$sold): ?><button type="button" data-atb-buy class="btn w-full"><?= e($t['buyNow']) ?></button><?php endif ?>
+  <?php if (!$compact && !$sold && wa_number() !== ''): ?>
+    <button type="button" data-atb-wa class="btn w-full border-[#1f9e55] text-[#1f7a45] hover:bg-[#1f9e55] hover:text-white"><?= wa_icon('h-5 w-5') ?><span><?= e($t['orderWhatsapp']) ?></span></button>
+  <?php endif ?>
 </div>
 <?php return (string) ob_get_clean();
 }

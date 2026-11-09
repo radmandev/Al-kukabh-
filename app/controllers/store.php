@@ -280,7 +280,8 @@ function store_place_order(string $l): never
         $url = create_checkout(['number' => $number, 'total' => $total, 'currency' => $s['currency']], $s);
         if ($url) json_out(['url' => $url]);
     }
-    json_out(['url' => "/$l/order/$number?e=" . rawurlencode($email)]);
+    // wa=1: the confirmation page hands the order to WhatsApp right away (once, just after ordering)
+    json_out(['url' => "/$l/order/$number?e=" . rawurlencode($email) . (wa_number() !== '' ? '&wa=1' : '')]);
 }
 
 function store_order(string $l, string $number): never
@@ -296,6 +297,10 @@ function store_order(string $l, string $number): never
         . '<p class="eyebrow text-center text-gold">' . e($t['orderNumber'] . ' ' . $o['number']) . '</p>'
         . '<h1 class="display mt-4 text-center text-3xl md:text-5xl">' . e($t['orderPlaced']) . '</h1>'
         . ($o['paymentMethod'] === 'bank' && $o['paymentStatus'] === 'pending' && $bank ? '<p class="mt-8 whitespace-pre-line bg-sand p-6 text-sm leading-7">' . e($bank) . '</p>' : '')
+        . (($wa = wa_link(wa_order_message($o, $l))) !== ''
+            ? '<div class="mt-10 text-center">' . (query('wa') ? '<p class="mb-4 text-sm text-stone">' . e($t['waRedirect']) . '</p>' : '')
+              . '<a href="' . e($wa) . '" data-wa-order' . (query('wa') ? ' data-wa-auto' : '') . ' class="btn border-[#1f9e55] bg-[#1f9e55] text-white hover:bg-[#1a8a4a]">' . wa_icon('h-5 w-5') . '<span>' . e($t['sendWhatsapp']) . '</span></a></div>'
+            : '')
         . '<div class="mt-12">' . order_summary($o, $l) . '</div>'
         . '<div class="mt-12 text-center"><a href="/' . $l . '/shop" class="btn btn-dark">' . e($t['continueShopping']) . '</a></div></div>';
     store_page($l, $html, ['title' => $t['orderNumber'], 'noindex' => true]);

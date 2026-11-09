@@ -166,7 +166,12 @@ $navLink = 'tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-
   </aside>
 </div>
 
-<script>window.KW = <?= json_encode(['l' => $l, 'currency' => $s['currency'], 't' => $t], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
+<?php if (wa_number() !== ''): ?>
+<!-- floating WhatsApp: straight to a chat with the store -->
+<a href="<?= e(wa_link()) ?>" target="_blank" rel="noopener" aria-label="<?= e($t['chatWhatsapp']) ?>" title="<?= e($t['chatWhatsapp']) ?>" data-wa-fab
+   class="fixed bottom-5 start-5 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_10px_30px_-8px_rgba(0,0,0,.45)] ring-2 ring-white/70 transition hover:scale-105 md:bottom-7 md:start-7"><?= wa_icon('h-7 w-7') ?></a>
+<?php endif ?>
+<script>window.KW = <?= json_encode(['l' => $l, 'currency' => $s['currency'], 't' => $t, 'wa' => wa_number()], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
 <script src="/assets/store.js?v=<?= @filemtime(ROOT . '/public/assets/store.js') ?>" defer></script>
 </body>
 </html>

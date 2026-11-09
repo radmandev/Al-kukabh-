@@ -209,10 +209,24 @@
       return;
     }
     const buy = !!el.closest('[data-atb-buy]');
-    if (!buy && !el.closest('[data-atb-add]')) return;
+    const viaWa = !!el.closest('[data-atb-wa]');
+    if (!buy && !viaWa && !el.closest('[data-atb-add]')) return;
     if (p.sizes.length && !root.dataset.size) {
       const err = $('[data-atb-err]', root);
       if (err) { err.textContent = t.selectSize; err.hidden = false; }
+      return;
+    }
+    if (viaWa) {
+      // order this abaya straight on WhatsApp: name, size, colour, qty + link (WhatsApp shows the photo preview)
+      const ar = l === 'ar';
+      const msg = [
+        ar ? '✨ أرغب بطلب هذه العباية من الكوكبة' : '✨ I would like to order this abaya from Al Kawkaba',
+        ar ? p.nameAr : p.nameEn,
+        `${ar ? 'المقاس' : 'Size'}: ${root.dataset.size || '—'} | ${ar ? 'اللون' : 'Colour'}: ${root.dataset.color || '—'} | ${ar ? 'الكمية' : 'Qty'}: ${+root.dataset.qty || 1}`,
+        `${ar ? 'العباية' : 'Abaya'}: ${location.origin}/${l}/product/${encodeURIComponent(p.slug)}`,
+        p.image ? `${ar ? 'الصورة' : 'Photo'}: ${new URL(p.image, location.origin).href}` : '',
+      ].filter(Boolean).join('\n');
+      window.open(`https://wa.me/${window.KW.wa}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
       return;
     }
     addLine({
@@ -612,6 +626,10 @@
       io.observe(el);
     });
   }
+
+  // order confirmation: hand the order to WhatsApp straight away (the button stays as a fallback)
+  const waAuto = $('[data-wa-auto]');
+  if (waAuto) setTimeout(() => { window.location.href = waAuto.href; }, 1200);
 
   renderBag();
   syncWish();

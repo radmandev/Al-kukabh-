@@ -38,13 +38,16 @@ $address = L($s['contact'], 'address', $l);
       <ul class="space-y-3 text-sm text-ivory/70">
         <?php if ($s['contact']['email']): ?><li><a href="mailto:<?= e($s['contact']['email']) ?>" class="link-u"><?= e($s['contact']['email']) ?></a></li><?php endif ?>
         <?php if ($s['contact']['phone']): ?><li dir="ltr" class="text-start"><a href="tel:<?= e($s['contact']['phone']) ?>" class="link-u"><?= e($s['contact']['phone']) ?></a></li><?php endif ?>
-        <?php if ($s['contact']['whatsapp']): ?><li><a href="https://wa.me/<?= e(preg_replace('/\D/', '', $s['contact']['whatsapp'])) ?>" class="link-u">WhatsApp</a></li><?php endif ?>
+        <?php if (wa_number() !== ''): ?><li><a href="<?= e(wa_link()) ?>" target="_blank" rel="noopener" class="inline-flex items-center gap-2 hover:text-ivory"><?= wa_icon('h-4 w-4 text-gold-soft') ?><span dir="ltr" class="link-u"><?= e($s['contact']['whatsapp']) ?></span></a></li><?php endif ?>
         <?php if ($address): ?><li><?= e($address) ?></li><?php endif ?>
       </ul>
       <?php if ($social): ?>
         <p class="eyebrow mb-4 mt-8 text-gold-soft"><?= e($t['followUs']) ?></p>
         <div class="flex flex-wrap gap-4 text-sm capitalize text-ivory/70">
-          <?php foreach ($social as $k => $v): ?><a href="<?= e($v) ?>" target="_blank" rel="noopener" class="link-u"><?= e($k) ?></a><?php endforeach ?>
+          <?php foreach ($social as $k => $v):
+              $handle = $k === 'instagram' && preg_match('~instagram\.com/([^/?#]+)~', $v, $mm) ? '@' . $mm[1] : $k; ?>
+            <a href="<?= e($v) ?>" target="_blank" rel="noopener" class="inline-flex items-center gap-2 normal-case hover:text-ivory"><?= $k === 'instagram' ? icon('instagram', 'h-5 w-5 text-gold-soft') : '' ?><span dir="ltr" class="link-u"><?= e($handle) ?></span></a>
+          <?php endforeach ?>
         </div>
       <?php endif ?>
     </div>
