@@ -65,6 +65,7 @@ $navLink = 'tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-
   <div class="mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-4 md:h-24 md:px-10">
     <div class="flex items-center gap-4 xl:gap-7">
       <button type="button" class="xl:hidden" data-drawer-open aria-label="<?= e($t['menu']) ?>"><?= icon('menu') ?></button>
+      <a href="/<?= $l ?>" aria-label="<?= e($l === 'ar' ? 'الرئيسية' : 'Home') ?>" title="<?= e($l === 'ar' ? 'الرئيسية' : 'Home') ?>" class="transition-colors hover:text-ivory"><?= icon('home') ?></a>
       <button type="button" data-search-open aria-label="<?= e($t['search']) ?>" class="flex items-center gap-2">
         <?= icon('search') ?><span class="tracked hidden text-[.68rem] font-bold md:inline xl:hidden"><?= e($t['search']) ?></span>
       </button>
