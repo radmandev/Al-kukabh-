@@ -28,7 +28,7 @@
 
 html[lang="ar"] { --font-display: var(--f-display-ar), serif; --font-sans: var(--f-sans-ar), system-ui, sans-serif; }
 
-/* soft cream marble with gentle gold veins: one image fixed behind the page (no tiling, works on iOS) */
+/* white-grey marble with glowing gold cracks (resources/kintsugi-backdrop.py): one image fixed behind the page, works on iOS */
 body:not(.admin)::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url(marble.webp) center / cover no-repeat; }
 .bg-sand { background-color: rgb(239 233 222 / .55); } /* let the marble show through sand panels */
 body { background-color: var(--color-ivory); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
