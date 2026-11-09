@@ -79,7 +79,139 @@ Address and delivery
 • If delivery is not possible, our team will contact you to arrange a new time.
 
 Questions about shipping? WhatsApp us on +967781519343
-or email alkawkabahabaya@gmail.com', 'returnsAr' => '', 'returnsEn' => '', 'privacyAr' => '', 'privacyEn' => '', 'termsAr' => '', 'termsEn' => ''],
+or email alkawkabahabaya@gmail.com', 'returnsAr' => 'رضاكِ يهمّنا 🤍
+
+نحرص أن تصلكِ كل عباية كما تخيّلتِها، وإن لم تكن كذلك فنحن هنا لمساعدتكِ.
+
+الاستبدال
+• يمكنكِ استبدال العباية بمقاس آخر أو بقطعة أخرى خلال ٧ أيام من تاريخ الاستلام.
+
+الاسترجاع
+• يمكنكِ استرجاع القطع الجاهزة خلال ٣ أيام من تاريخ الاستلام.
+• يُعاد المبلغ بنفس طريقة الدفع خلال ٧ أيام عمل من استلامنا للقطعة وفحصها.
+
+شروط الاستبدال والاسترجاع
+• أن تكون العباية غير ملبوسة وغير مغسولة، وبحالتها الأصلية.
+• أن تكون مع البطاقات والتغليف الأصلي والطرحة إن وُجدت.
+• إرفاق رقم الطلب.
+
+قطع لا يمكن استرجاعها
+• القطع المفصّلة حسب الطلب أو حسب مقاسكِ الخاص.
+• القطع المعدّلة بناءً على طلبكِ (تقصير، تضييق، إضافات).
+• قطع العروض والتخفيضات النهائية، إلا إذا كان بها عيب.
+
+العيوب والأخطاء
+• إذا وصلتكِ القطعة بعيب في الصناعة أو بمقاس/تصميم غير الذي طلبتِه، نستبدلها لكِ أو نعيد المبلغ كاملاً، ونتحمّل نحن رسوم الشحن.
+• يرجى إبلاغنا خلال ٤٨ ساعة من الاستلام مع صور واضحة للقطعة.
+
+رسوم الشحن
+• في حالات الاستبدال أو الاسترجاع لغير العيوب، تتحمّل العميلة رسوم الشحن.
+
+كيف تطلبين الاستبدال أو الاسترجاع؟
+١. تواصلي معنا عبر واتساب ‎+967781519343 أو البريد alkawkabahabaya@gmail.com
+٢. أرسلي رقم الطلب وسبب الاستبدال أو الاسترجاع وصورة للقطعة.
+٣. نرسل لكِ تفاصيل إعادة القطعة، ونتابع معكِ حتى إتمام الطلب.', 'returnsEn' => 'Your satisfaction matters to us 🤍
+
+We want every abaya to arrive exactly as you imagined it — and if it doesn\'t, we\'re here to help.
+
+Exchanges
+• You can exchange your abaya for another size or piece within 7 days of delivery.
+
+Returns
+• Ready-to-wear pieces can be returned within 3 days of delivery.
+• Refunds are made to the original payment method within 7 business days of receiving and inspecting the piece.
+
+Conditions for exchanges and returns
+• The abaya must be unworn, unwashed and in its original condition.
+• It must include its tags, original packaging and matching shayla, if any.
+• Please include your order number.
+
+Non-returnable items
+• Made-to-order or made-to-measure pieces.
+• Pieces altered at your request (shortening, taking in, additions).
+• Final-sale items, unless they are defective.
+
+Defects and errors
+• If your piece arrives with a manufacturing defect, or in a size/design other than the one you ordered, we will exchange it or refund it in full and cover the shipping.
+• Please let us know within 48 hours of delivery with clear photos of the piece.
+
+Shipping fees
+• For exchanges or returns that are not due to a defect, shipping is paid by the customer.
+
+How to request an exchange or return
+1. Contact us on WhatsApp +967781519343 or at alkawkabahabaya@gmail.com
+2. Send your order number, the reason and a photo of the piece.
+3. We\'ll send you the return details and follow up with you until it\'s complete.', 'privacyAr' => 'خصوصيتكِ أمانة لدينا 🔒
+
+نلتزم في الكوكبة للعبايات بحماية بياناتكِ الشخصية واستخدامها فقط لخدمتكِ.
+
+البيانات التي نجمعها
+• الاسم، رقم الجوال، البريد الإلكتروني، وعنوان الشحن عند إتمام الطلب أو إنشاء حساب.
+• تفاصيل طلباتكِ (القطع، المقاسات، طريقة الدفع).
+• بريدكِ الإلكتروني إذا اشتركتِ في النشرة البريدية.
+
+كيف نستخدم بياناتكِ
+• لتجهيز طلبكِ وشحنه والتواصل معكِ بخصوصه، بما في ذلك عبر واتساب.
+• لإرسال رقم تتبّع الشحنة وتحديثات الطلب.
+• لإرسال جديد المجموعات والعروض فقط إذا اشتركتِ في النشرة البريدية.
+
+مشاركة البيانات
+• لا نبيع بياناتكِ ولا نؤجرها لأي جهة.
+• نشارك فقط ما يلزم (الاسم والعنوان ورقم الجوال) مع شركة الشحن لتوصيل طلبكِ.
+
+الدفع
+• لا نحتفظ ببيانات بطاقات الدفع على موقعنا.
+
+ملفات تعريف الارتباط والتخزين
+• نستخدم ملفات تعريف ارتباط ضرورية فقط: لتسجيل الدخول، وحفظ اللغة التي اخترتِها، وحماية النماذج من الاستخدام غير المصرّح. لا نستخدم ملفات تتبّع إعلانية.
+• تُحفظ حقيبة التسوق والمفضلة على جهازكِ لتسهيل التسوق.
+
+حماية البيانات
+• نحمي بياناتكِ باتصال آمن وكلمات مرور مشفّرة، ونحصر الوصول إليها على فريق المتجر.
+
+حقوقكِ
+• يمكنكِ طلب الاطلاع على بياناتكِ أو تعديلها أو حذفها في أي وقت.
+• يمكنكِ إلغاء الاشتراك في النشرة البريدية متى شئتِ.
+
+للتواصل بخصوص الخصوصية: alkawkabahabaya@gmail.com
+أو واتساب: ‎+967781519343
+
+قد نحدّث هذه السياسة من وقت لآخر، وتُنشر أي تغييرات على هذه الصفحة.', 'privacyEn' => 'Your privacy is in safe hands 🔒
+
+At Al Kawkaba Abayas we protect your personal data and use it only to serve you.
+
+What we collect
+• Your name, phone number, email and shipping address when you order or create an account.
+• Your order details (pieces, sizes, payment method).
+• Your email if you subscribe to our newsletter.
+
+How we use it
+• To prepare and ship your order and to contact you about it, including on WhatsApp.
+• To send you the tracking number and order updates.
+• To send news about collections and offers — only if you subscribed to the newsletter.
+
+Sharing
+• We never sell or rent your data.
+• We share only what is needed (name, address, phone) with the courier to deliver your order.
+
+Payments
+• We do not store card details on our website.
+
+Cookies and storage
+• We use essential cookies only: to keep you signed in, remember your language and protect our forms. We do not use advertising trackers.
+• Your bag and wishlist are saved on your own device to make shopping easier.
+
+Security
+• Your data is protected with a secure connection and encrypted passwords, and only the store team can access it.
+
+Your rights
+• You can ask to see, correct or delete your data at any time.
+• You can unsubscribe from the newsletter whenever you like.
+
+Privacy questions: alkawkabahabaya@gmail.com
+or WhatsApp: +967781519343
+
+We may update this policy from time to time; any changes will be posted on this page.', 'termsAr' => '', 'termsEn' => ''],
         'seo' => ['titleAr' => 'الكوكبة للعبايات', 'titleEn' => 'Al Kawkaba Abayas', 'descAr' => 'عبايات فاخرة مصممة بإتقان.', 'descEn' => 'Luxury abayas, masterfully crafted.', 'ogImage' => ''],
     ];
 }
