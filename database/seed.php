@@ -234,7 +234,7 @@ $sections = [
             ['media' => ref($laceQ[3]), 'captionAr' => 'الحافة المخرّمة', 'captionEn' => 'Scalloped Hem'],
             ['media' => ref($luluQ[1]), 'captionAr' => 'أكمام الشيفون', 'captionEn' => 'Chiffon Sleeves'],
         ], 'ctaAr' => 'اكتشفي القطع', 'ctaEn' => 'Discover the Pieces', 'link' => '/ar/shop']],
-    // video showcase — kept as a hidden draft: the homepage shows photos only (publish from Admin → Homepage if wanted)
+    // "See it in motion": the only homepage block with video — it always shows every video in the media library
     ['campaign', ['eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
         'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.', 'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
         'layout' => 'showcase', 'items' => [
@@ -244,7 +244,7 @@ $sections = [
             ['media' => ref($vid2, $poster2), 'captionAr' => 'الياقة والأكمام', 'captionEn' => 'Lapel & Cuffs'],
             $motion[2],
         ],
-        'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya'], false],
+        'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya']],
     ['collections', ['titleAr' => 'المجموعات', 'titleEn' => 'The Collections', 'collectionIds' => []]],
     ['story', ['eyebrowAr' => 'قصتنا', 'eyebrowEn' => 'Our Story', 'titleAr' => 'من قريةٍ صغيرة… إلى حلمٍ يُرتدى', 'titleEn' => 'From a Small Village to a Dream You Can Wear',
         'textAr' => "من قريةٍ ريفيةٍ صغيرة بدأت الحكاية، هناك حيث نسجت مصممتنا أحلامها من خيوط الشمس.\n\nبإبرةٍ وخيط، ويدين لا تعرفان المستحيل، صنعت أول فستانٍ لها… فلفت الأنظار، وكان بداية الطريق.\n\nآمنت بموهبتها، فدرست تصميم الأزياء ونالت درجة البكالوريوس، ومضت تبتكر تصاميم عصرية تحمل بصمتها الخاصة.\n\nلم تُمنح الشهرة، بل صنعتها بيديها؛ قطعةً بعد قطعة، وثقةً بعد ثقة، حتى صار لها جمهورٌ ينتظر جديدها.\n\nعشر سنواتٍ من التصميم والتنفيذ، من الخطأ والتعلّم، من السهر والشغف…\nوفي كل عبايةٍ من الكوكبة، تجدين شيئاً من تلك الرحلة.",

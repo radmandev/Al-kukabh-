@@ -25,12 +25,13 @@ function store_redirect_locale(string $path): never
 }
 
 /**
- * The homepage is photos only: drop video slides / mobile videos from the hero, video items from other blocks,
- * and skip blocks that would be left empty (e.g. the video showcase). Videos still appear on product pages.
+ * Homepage rule: photos everywhere, videos only in the "See it in motion" showcase.
+ * Drops video slides / mobile videos from the hero and video items from other blocks (blocks left empty are skipped).
  */
 function home_without_video(string $type, string $json): ?string
 {
     $d = (array) jdecode($json, []);
+    if ($type === 'campaign' && ($d['layout'] ?? '') === 'showcase') return $json;   // the one place videos belong
     $isVid = fn ($m) => is_array($m) && ($m['kind'] ?? '') === 'video';
     if ($type === 'hero') {
         $slides = [];
@@ -51,12 +52,55 @@ function home_without_video(string $type, string $json): ?string
     return jencode($d);
 }
 
+/** Every video in the media library as showcase items (poster resolved), in upload order. */
+function all_video_items(): array
+{
+    $vids = rows("SELECT * FROM media WHERE kind = 'video' ORDER BY createdAt");
+    $posters = media_map(array_column($vids, 'posterId'));
+    return array_map(fn ($v) => ['media' => ['id' => $v['id'], 'url' => $v['url'], 'kind' => 'video', 'altAr' => $v['altAr'], 'altEn' => $v['altEn']]
+        + (isset($posters[$v['posterId'] ?? '']) ? ['poster' => $posters[$v['posterId']]['url']] : [])], $vids);
+}
+
+/**
+ * The "See it in motion" showcase always carries ALL videos: the ones arranged in the dashboard first (with their captions),
+ * then any other video in the media library. If no showcase is published, a default one is placed after New Arrivals.
+ */
+function motion_showcase(?array $section): ?string
+{
+    $d = $section ? (array) jdecode($section['data'], []) : [
+        'eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
+        'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.',
+        'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
+        'layout' => 'showcase', 'items' => [],
+    ];
+    $items = array_values(array_filter((array) ($d['items'] ?? []), fn ($it) => is_array($it) && (($it['media']['kind'] ?? '') === 'video')));
+    $have = array_column(array_column($items, 'media'), 'url');
+    foreach (all_video_items() as $it) if (!in_array($it['media']['url'], $have, true)) $items[] = $it;
+    if (!$items) return null;
+    $d['layout'] = 'showcase';
+    $d['items'] = $items;
+    return jencode($d);
+}
+
 function store_home(string $l): never
 {
     $s = settings();
+    $secs = rows('SELECT * FROM sections WHERE published = 1 ORDER BY sort');
+    $showcase = null;
+    foreach ($secs as $x) {
+        if ($x['type'] === 'campaign' && (jdecode($x['data'], [])['layout'] ?? '') === 'showcase') { $showcase = $x; break; }
+    }
+    if (!$showcase) {
+        // no published showcase in this database: add the default one right after New Arrivals (or at the end)
+        $draft = row("SELECT * FROM sections WHERE type = 'campaign' AND data LIKE ? ORDER BY sort LIMIT 1", ['%"showcase"%']);
+        $virtual = ['id' => 'motion', 'type' => 'campaign', 'data' => $draft['data'] ?? '{}', 'motion' => true];
+        $at = array_search('products', array_column($secs, 'type'), true);
+        array_splice($secs, $at === false ? count($secs) : $at + 1, 0, [$virtual]);
+    }
     $html = '';
-    foreach (rows('SELECT * FROM sections WHERE published = 1 ORDER BY sort') as $i => $x) {
-        $data = home_without_video($x['type'], $x['data']);
+    foreach ($secs as $i => $x) {
+        $isShowcase = !empty($x['motion']) || ($showcase && $x['id'] === $showcase['id']);
+        $data = $isShowcase ? motion_showcase(!empty($x['motion']) && $x['data'] === '{}' ? null : $x) : home_without_video($x['type'], $x['data']);
         if ($data === null) continue;
         $sec = render_section($x['type'], $data, $l, $s['currency']);
         // every block after the first fades up as it scrolls into view (store.js)
