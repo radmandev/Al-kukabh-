@@ -221,7 +221,8 @@ function sec_story(array $d, string $l): string
     }
     return '<section class="bg-ink py-20 text-ivory md:py-32">'
         . '<div class="mx-auto grid max-w-[1400px] items-center gap-12 px-4 md:grid-cols-2 md:gap-20 md:px-10">'
-        . '<div class="relative aspect-[4/5] overflow-hidden">' . media_el(mref($d['media'] ?? null, $l), '50vw') . '</div>'
+        // photo first on phones (on top); from md up it moves to the end column → left in Arabic, text on the right
+        . '<div class="relative aspect-[4/5] overflow-hidden md:order-last">' . media_el(mref($d['media'] ?? null, $l), '50vw') . '</div>'
         . '<div>' . sec_head($d, $l, false, true) . '<div class="px-6 md:px-10 [&>div]:text-start">' . sec_cta($d, $l, true) . '</div></div></div>'
         . ($g ? '<div class="mx-auto mt-16 grid max-w-[1400px] grid-cols-2 gap-4 px-4 md:mt-24 md:grid-cols-4 md:gap-6 md:px-10">' . $g . '</div>' : '')
         . '</section>';
