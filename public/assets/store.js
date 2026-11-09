@@ -538,6 +538,21 @@
     });
   }
 
+  // homepage blocks fade up the first time they scroll into view (content stays visible without JS)
+  const reveals = [...document.querySelectorAll('[data-reveal]')].filter((el) => el.getBoundingClientRect().top > innerHeight);
+  if (reveals.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'none';
+      io.unobserve(e.target);
+    }), { rootMargin: '0px 0px -12% 0px' });
+    reveals.forEach((el) => {
+      el.style.cssText = 'opacity:0;transform:translateY(40px);transition:opacity 1.2s var(--ease-lux),transform 1.2s var(--ease-lux)';
+      io.observe(el);
+    });
+  }
+
   renderBag();
   syncWish();
 })();

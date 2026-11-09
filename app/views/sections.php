@@ -235,27 +235,42 @@ function sec_campaign(array $d, string $l): string
         return '<section class="relative h-[90svh] min-h-[520px] overflow-hidden bg-ink text-ivory">' . media_el(mref($items[0]['media'] ?? null, $l))
             . '<div class="absolute inset-0 bg-black/30"></div><div class="absolute inset-x-0 bottom-0 pb-20">' . sec_head($d, $l, true, true) . sec_cta($d, $l, true) . '</div></section>';
     }
+    if ($layout === 'mosaic' && $items) {
+        // editorial mosaic on black: one tall hero image + close-ups (desktop: 2x2 block + 2-column squares)
+        $h = '';
+        foreach ($items as $i => $it) {
+            $cap = L($it, 'caption', $l);
+            $h .= '<figure class="group relative overflow-hidden bg-onyx ' . ($i === 0 ? 'col-span-2 aspect-[4/5] md:row-span-2 md:aspect-auto' : 'aspect-square') . '">'
+                . '<div class="absolute inset-0 transition duration-[1.6s] ease-[var(--ease-lux)] group-hover:scale-105">' . media_el(mref($it['media'] ?? null, $l), $i === 0 ? '50vw' : '25vw') . '</div>'
+                . ($cap !== '' ? '<figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-4 pt-12 md:px-5 md:pb-5"><span class="eyebrow text-gold-soft">' . e($cap) . '</span></figcaption>' : '')
+                . '</figure>';
+        }
+        return '<section class="bg-ink py-24 text-ivory md:py-36">' . sec_head($d, $l, true, true)
+            . '<div class="mx-auto mt-14 grid max-w-[1400px] grid-cols-2 gap-2 px-4 md:mt-16 md:grid-cols-4 md:gap-3 md:px-10">' . $h . '</div>' . sec_cta($d, $l, true) . '</section>';
+    }
+    // portrait phone videos keep their full 9:16 frame
+    $allVideo = $items && !array_filter($items, fn ($it) => (($it['media']['kind'] ?? '') !== 'video'));
     $h = '';
     foreach ($items as $i => $it) {
         $cap = L($it, 'caption', $l);
         $h .= '<figure class="' . ($layout === 'grid' && $i === 0 ? 'col-span-2 row-span-2 md:col-span-1' : '') . '">'
-            . '<div class="relative overflow-hidden ' . ($layout === 'split' ? 'aspect-[4/5]' : 'aspect-[3/4]') . '">' . media_el(mref($it['media'] ?? null, $l), '50vw') . '</div>'
+            . '<div class="relative overflow-hidden ' . ($allVideo ? 'aspect-[9/16]' : ($layout === 'split' ? 'aspect-[4/5]' : 'aspect-[3/4]')) . '">' . media_el(mref($it['media'] ?? null, $l), '50vw') . '</div>'
             . ($cap !== '' ? '<figcaption class="eyebrow mt-3 text-stone">' . e($cap) . '</figcaption>' : '') . '</figure>';
     }
     return '<section class="py-24 md:py-36">' . sec_head($d, $l)
-        . '<div class="mt-12 grid gap-4 px-4 md:gap-6 md:px-10 ' . ($layout === 'split' ? 'md:grid-cols-2' : 'grid-cols-2 md:grid-cols-3') . '">' . $h . '</div>' . sec_cta($d, $l) . '</section>';
+        . '<div class="mt-12 grid gap-3 px-4 md:gap-6 md:px-10 ' . ($allVideo ? 'mx-auto max-w-4xl ' : '') . ($layout === 'split' ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3') . '">' . $h . '</div>' . sec_cta($d, $l) . '</section>';
 }
 
 function sec_values(array $d, string $l): string
 {
     $h = '';
     foreach (sec_list($d, 'items') as $i => $it) {
-        $h .= '<div class="bg-onyx px-8 py-12 text-center"><span class="display text-3xl text-gold-soft">' . str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) . '</span>'
-            . '<h3 class="display mt-4 text-2xl">' . e(L($it, 'title', $l)) . '</h3>'
-            . '<p class="mx-auto mt-3 max-w-xs text-sm leading-7 text-ivory/60">' . e(L($it, 'text', $l)) . '</p></div>';
+        $h .= '<div class="bg-onyx px-3 py-8 text-center md:px-8 md:py-12"><span class="display text-3xl text-gold-soft">' . str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) . '</span>'
+            . '<h3 class="display mt-3 text-xl md:mt-4 md:text-2xl">' . e(L($it, 'title', $l)) . '</h3>'
+            . '<p class="mx-auto mt-2 max-w-xs text-xs leading-6 text-ivory/60 md:mt-3 md:text-sm md:leading-7">' . e(L($it, 'text', $l)) . '</p></div>';
     }
     return '<section class="border-y border-gold/40 bg-onyx py-24 text-ivory md:py-32">' . sec_head($d, $l, true, true)
-        . '<div class="mx-auto mt-16 grid max-w-[1200px] gap-px bg-gold/20 sm:grid-cols-2 lg:grid-cols-3">' . $h . '</div></section>';
+        . '<div class="mx-auto mt-12 grid max-w-[1200px] grid-cols-2 gap-px bg-gold/20 md:mt-16 lg:grid-cols-3">' . $h . '</div></section>';
 }
 
 function sec_text(array $d, string $l): string

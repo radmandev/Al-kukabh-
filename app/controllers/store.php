@@ -28,8 +28,10 @@ function store_home(string $l): never
 {
     $s = settings();
     $html = '';
-    foreach (rows('SELECT * FROM sections WHERE published = 1 ORDER BY sort') as $x) {
-        $html .= render_section($x['type'], $x['data'], $l, $s['currency']);
+    foreach (rows('SELECT * FROM sections WHERE published = 1 ORDER BY sort') as $i => $x) {
+        $sec = render_section($x['type'], $x['data'], $l, $s['currency']);
+        // every block after the first fades up as it scrolls into view (store.js)
+        $html .= $i === 0 ? $sec : '<div data-reveal>' . $sec . '</div>';
     }
     store_page($l, $html, ['isHome' => true, 'path' => '']);
 }
