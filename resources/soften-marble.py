@@ -1,5 +1,5 @@
-# Usage: python resources/soften-marble.py photo.jpg public/assets/marble.webp 0.7 0.32 1856 noseam
-#   args: gold fade (0-1), cream wash (0-1), width px, "noseam" = single backdrop image (no tiling)
+# Usage: python resources/soften-marble.py photo.jpg public/assets/marble.webp 0.62 0.24 1856 noseam 0.45
+#   args: gold fade (0-1), cream wash (0-1), width px, "noseam" = single backdrop image (no tiling), gold sheen (0-1)
 # Needs: numpy pillow scipy
 # Soften a marble photo (fainter gold veins, cream wash) and make it a seamless tile.
 import sys, numpy as np
@@ -26,10 +26,18 @@ a = (a * .5 + calm * .5) * (1 - m) + around * m
 g = a.mean(2, keepdims=True)
 a = g + (a - g) * .7
 # 2) gentle cream wash and slight lift
-cream = np.array([.973, .949, .91])
+cream = np.array([.925, .885, .815])
 a = a * (1 - wash) + cream * wash
 
 SEAMLESS = len(sys.argv) <= 6 or sys.argv[6] != 'noseam'
+# 2b) gold sheen: lift and warm the remaining vein pixels so they glint like gold leaf
+GLOW = float(sys.argv[7]) if len(sys.argv) > 7 else 0
+if GLOW:
+    gm = (nd.gaussian_filter(gold, .8) * GLOW)[..., None]
+    shine = np.array([.9, .72, .36])                    # warm metallic gold
+    a = a * (1 - gm * .55) + shine * gm * .55
+    spec = np.clip((gold - .6) / .4, 0, 1)[..., None] * GLOW * .35   # brightest cores get a pale highlight
+    a = a * (1 - spec) + np.array([1.0, .97, .84]) * spec
 # 3) seamless, one axis at a time: blend with a copy shifted half a tile along that axis.
 #    The copy's seam sits mid-tile where the original has full weight, so it never shows.
 def ramp(n):
