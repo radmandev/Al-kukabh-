@@ -220,6 +220,17 @@ $sections = [
         'textEn' => 'At Al Kawkaba, an abaya is more than a garment — it is a presence that reflects your taste. We choose our fabrics with care and finish every detail by hand, so each piece arrives as you deserve.',
         'ctaAr' => 'قصتنا', 'ctaEn' => 'Our Story', 'link' => '/ar/story']],
     ['products', ['titleAr' => 'وصل حديثاً', 'titleEn' => 'New Arrivals', 'source' => 'new', 'limit' => 8, 'ctaAr' => 'عرض الكل', 'ctaEn' => 'View All', 'link' => '/ar/shop?tag=new']],
+    // "See it in motion": the only homepage block with video — it always shows every video in the media library
+    ['campaign', ['eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
+        'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.', 'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
+        'layout' => 'showcase', 'items' => [
+            ['media' => ref($vid1, $poster1), 'captionAr' => 'نقشة الشماغ', 'captionEn' => 'Keffiyeh Trim'],
+            $motion[0],
+            $motion[1],
+            ['media' => ref($vid2, $poster2), 'captionAr' => 'الياقة والأكمام', 'captionEn' => 'Lapel & Cuffs'],
+            $motion[2],
+        ],
+        'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya']],
     // editorial mosaic: one tall look + close-ups of the handwork
     ['campaign', ['eyebrowAr' => 'صُنعت باليد', 'eyebrowEn' => 'Made by Hand', 'titleAr' => 'فنّ التفاصيل', 'titleEn' => 'The Art of Detail',
         'textAr' => 'خرزةٌ بعد خرزة، وغرزةٌ بعد غرزة… هنا تُصنع الفخامة التي تُرى عن قرب.', 'textEn' => 'Bead by bead, stitch by stitch — this is the luxury you see up close.',
@@ -234,17 +245,6 @@ $sections = [
             ['media' => ref($laceQ[3]), 'captionAr' => 'الحافة المخرّمة', 'captionEn' => 'Scalloped Hem'],
             ['media' => ref($luluQ[1]), 'captionAr' => 'أكمام الشيفون', 'captionEn' => 'Chiffon Sleeves'],
         ], 'ctaAr' => 'اكتشفي القطع', 'ctaEn' => 'Discover the Pieces', 'link' => '/ar/shop']],
-    // "See it in motion": the only homepage block with video — it always shows every video in the media library
-    ['campaign', ['eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
-        'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.', 'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
-        'layout' => 'showcase', 'items' => [
-            ['media' => ref($vid1, $poster1), 'captionAr' => 'نقشة الشماغ', 'captionEn' => 'Keffiyeh Trim'],
-            $motion[0],
-            $motion[1],
-            ['media' => ref($vid2, $poster2), 'captionAr' => 'الياقة والأكمام', 'captionEn' => 'Lapel & Cuffs'],
-            $motion[2],
-        ],
-        'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya']],
     ['collections', ['titleAr' => 'المجموعات', 'titleEn' => 'The Collections', 'collectionIds' => []]],
     ['story', ['eyebrowAr' => 'قصتنا', 'eyebrowEn' => 'Our Story', 'titleAr' => 'من قريةٍ صغيرة… إلى حلمٍ يُرتدى', 'titleEn' => 'From a Small Village to a Dream You Can Wear',
         'textAr' => "من قريةٍ ريفيةٍ صغيرة بدأت الحكاية، هناك حيث نسجت مصممتنا أحلامها من خيوط الشمس.\n\nبإبرةٍ وخيط، ويدين لا تعرفان المستحيل، صنعت أول فستانٍ لها… فلفت الأنظار، وكان بداية الطريق.\n\nآمنت بموهبتها، فدرست تصميم الأزياء ونالت درجة البكالوريوس، ومضت تبتكر تصاميم عصرية تحمل بصمتها الخاصة.\n\nلم تُمنح الشهرة، بل صنعتها بيديها؛ قطعةً بعد قطعة، وثقةً بعد ثقة، حتى صار لها جمهورٌ ينتظر جديدها.\n\nعشر سنواتٍ من التصميم والتنفيذ، من الخطأ والتعلّم، من السهر والشغف…\nوفي كل عبايةٍ من الكوكبة، تجدين شيئاً من تلك الرحلة.",

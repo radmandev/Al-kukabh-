@@ -52,13 +52,34 @@ function home_without_video(string $type, string $json): ?string
     return jencode($d);
 }
 
-/** Every video in the media library as showcase items (poster resolved), in upload order. */
+/** True when the file behind a media URL is really there (uploads can go missing on a server after a redeploy). */
+function media_file_exists(string $url): bool
+{
+    if (str_starts_with($url, '/media/')) return is_file(upload_dir() . '/' . basename(parse_url($url, PHP_URL_PATH)));
+    if (str_starts_with($url, '/brand/')) return is_file(ROOT . '/public' . rawurldecode(parse_url($url, PHP_URL_PATH)));
+    return true;
+}
+
+/**
+ * Every video for the showcase, in upload order: the media library's videos whose files exist;
+ * if none are available, the brand videos shipped with the site in public/brand/videos (each one that has a .poster.jpg).
+ */
 function all_video_items(): array
 {
-    $vids = rows("SELECT * FROM media WHERE kind = 'video' ORDER BY createdAt");
-    $posters = media_map(array_column($vids, 'posterId'));
-    return array_map(fn ($v) => ['media' => ['id' => $v['id'], 'url' => $v['url'], 'kind' => 'video', 'altAr' => $v['altAr'], 'altEn' => $v['altEn']]
-        + (isset($posters[$v['posterId'] ?? '']) ? ['poster' => $posters[$v['posterId']]['url']] : [])], $vids);
+    $vids = array_values(array_filter(rows("SELECT * FROM media WHERE kind = 'video' ORDER BY createdAt"), fn ($v) => media_file_exists($v['url'])));
+    if ($vids) {
+        $posters = media_map(array_column($vids, 'posterId'));
+        return array_map(fn ($v) => ['media' => ['id' => $v['id'], 'url' => $v['url'], 'kind' => 'video', 'altAr' => $v['altAr'], 'altEn' => $v['altEn']]
+            + (isset($posters[$v['posterId'] ?? '']) ? ['poster' => $posters[$v['posterId']]['url']] : [])], $vids);
+    }
+    $items = [];
+    foreach (glob(ROOT . '/public/brand/videos/*.poster.jpg') ?: [] as $poster) {
+        $mp4 = substr($poster, 0, -strlen('.poster.jpg')) . '.mp4';
+        if (!is_file($mp4)) continue;
+        $url = fn (string $f) => '/brand/videos/' . rawurlencode(basename($f));
+        $items[] = ['media' => ['url' => $url($mp4), 'kind' => 'video', 'poster' => '/brand/videos/' . basename($poster), 'altAr' => 'عباية الكوكبة', 'altEn' => 'Al Kawkaba abaya']];
+    }
+    return $items;
 }
 
 /**
@@ -73,7 +94,7 @@ function motion_showcase(?array $section): ?string
         'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
         'layout' => 'showcase', 'items' => [],
     ];
-    $items = array_values(array_filter((array) ($d['items'] ?? []), fn ($it) => is_array($it) && (($it['media']['kind'] ?? '') === 'video')));
+    $items = array_values(array_filter((array) ($d['items'] ?? []), fn ($it) => is_array($it) && (($it['media']['kind'] ?? '') === 'video') && media_file_exists((string) ($it['media']['url'] ?? ''))));
     $have = array_column(array_column($items, 'media'), 'url');
     foreach (all_video_items() as $it) if (!in_array($it['media']['url'], $have, true)) $items[] = $it;
     if (!$items) return null;
@@ -90,13 +111,17 @@ function store_home(string $l): never
     foreach ($secs as $x) {
         if ($x['type'] === 'campaign' && (jdecode($x['data'], [])['layout'] ?? '') === 'showcase') { $showcase = $x; break; }
     }
-    if (!$showcase) {
-        // no published showcase in this database: add the default one right after New Arrivals (or at the end)
+    if ($showcase) {
+        $secs = array_values(array_filter($secs, fn ($x) => $x['id'] !== $showcase['id']));
+        $entry = $showcase;
+    } else {
+        // no published showcase in this database: use the stored draft's texts (or the defaults)
         $draft = row("SELECT * FROM sections WHERE type = 'campaign' AND data LIKE ? ORDER BY sort LIMIT 1", ['%"showcase"%']);
-        $virtual = ['id' => 'motion', 'type' => 'campaign', 'data' => $draft['data'] ?? '{}', 'motion' => true];
-        $at = array_search('products', array_column($secs, 'type'), true);
-        array_splice($secs, $at === false ? count($secs) : $at + 1, 0, [$virtual]);
+        $entry = ['id' => 'motion', 'type' => 'campaign', 'data' => $draft['data'] ?? '{}', 'motion' => true];
     }
+    // "See it in motion" always comes right after New Arrivals (or at the end if there is none)
+    $at = array_search('products', array_column($secs, 'type'), true);
+    array_splice($secs, $at === false ? count($secs) : $at + 1, 0, [$entry]);
     $html = '';
     foreach ($secs as $i => $x) {
         $isShowcase = !empty($x['motion']) || ($showcase && $x['id'] === $showcase['id']);
