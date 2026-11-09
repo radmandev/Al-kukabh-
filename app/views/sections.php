@@ -127,7 +127,7 @@ function sec_hero(array $d, string $l): string
 
 function rail(string $label, string $items): string
 {
-    return '<div class="relative"><div data-rail role="region" aria-label="' . e($label) . '" class="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 md:gap-6 md:scroll-px-10 md:px-10">'
+    return '<div class="relative"><div data-rail data-autoslide role="region" aria-label="' . e($label) . '" class="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 md:gap-6 md:scroll-px-10 md:px-10">'
         . $items . '</div><div class="mt-8 hidden justify-center gap-2 md:flex">'
         . '<button type="button" data-rail-step="-1" class="border border-line p-3 hover:border-ink" aria-label="Previous">' . icon('arrow', 'h-4 w-4 rotate-180 rtl:rotate-0') . '</button>'
         . '<button type="button" data-rail-step="1" class="border border-line p-3 hover:border-ink" aria-label="Next">' . icon('arrow', 'h-4 w-4 rtl:rotate-180') . '</button>'
@@ -183,7 +183,7 @@ function sec_collections(array $d, string $l): string
     $rest = '';
     foreach ($cols as $c) $rest .= $tile($c, false);
     return '<section class="py-16 md:py-36">' . sec_head($d, $l)
-        . '<div class="no-scrollbar mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[12%] pb-2 md:hidden">' . $swipe . '</div>'
+        . '<div data-autoslide class="no-scrollbar mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[12%] pb-2 md:hidden">' . $swipe . '</div>'
         . '<div class="mt-12 hidden space-y-6 px-10 md:block">' . $tile($first, true)
         . ($cols ? '<div class="grid gap-6 ' . (count($cols) % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2') . '">' . $rest . '</div>' : '')
         . '</div></section>';

@@ -612,6 +612,29 @@
     layout();
   });
 
+  // phones: swipe rows on the homepage (new arrivals, collections) glide to the next card on their own
+  if (matchMedia('(max-width: 767px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    $$('[data-autoslide]').forEach((row) => {
+      const EVERY = 3500;          // ms between steps
+      const RESUME = 7000;         // wait after the visitor touches the row
+      let visible = false, holdUntil = 0;
+      const hold = () => { holdUntil = Date.now() + RESUME; };
+      ['touchstart', 'pointerdown', 'wheel'].forEach((ev) => row.addEventListener(ev, hold, { passive: true }));
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.5 }).observe(row);
+      setInterval(() => {
+        if (!visible || Date.now() < holdUntil || document.hidden) return;
+        const card = row.firstElementChild;
+        if (!card) return;
+        const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+        const step = card.getBoundingClientRect().width + gap;
+        const rtl = getComputedStyle(row).direction === 'rtl';
+        const atEnd = Math.abs(row.scrollLeft) + row.clientWidth >= row.scrollWidth - 4;
+        if (atEnd) row.scrollTo({ left: 0, behavior: 'smooth' });          // back to the first card
+        else row.scrollBy({ left: rtl ? -step : step, behavior: 'smooth' });
+      }, EVERY);
+    });
+  }
+
   // homepage blocks fade up the first time they scroll into view (content stays visible without JS)
   const reveals = [...document.querySelectorAll('[data-reveal]')].filter((el) => el.getBoundingClientRect().top > innerHeight);
   if (reveals.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
