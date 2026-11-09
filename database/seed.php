@@ -111,10 +111,10 @@ foreach ([['occasion', 'عبايات المناسبات', 'Occasion'], ['everyda
 
 $cols = [];
 foreach ([
-    ['layali', 'ليالي', 'Layali', 'عبايات السهرة بتطريز يدوي وأقمشة فاخرة.', 'Evening abayas with hand embroidery and rich fabrics.', $seq1],
-    ['noor', 'مجموعة نور', 'The Noor Collection', 'قصّات كلاسيكية بلمسات ذهبية خافتة، مستوحاة من ضوء الفجر.', 'Classic silhouettes touched with soft gold, inspired by first light.', $classic],
-    ['essentials', 'الأساسيات', 'Essentials', 'قطع يومية بخامات ناعمة وتفصيل متقن.', 'Everyday pieces in soft fabrics, impeccably tailored.', $satin],
-    ['atelier', 'إصدارات الأتيليه', 'Atelier Editions', 'قطع محدودة العدد تُصنع يدوياً في مشغلنا.', 'Limited pieces, handmade in our atelier.', $check1],
+    // one collection per fabric
+    ['satin', 'عبايات الساتان', 'Satin Abayas', 'لمعةٌ ناعمة وانسيابٌ فاخر، لإطلالاتٍ تلفت الأنظار بهدوء.', 'A soft sheen and a luxurious drape, for looks that turn heads quietly.', $najma],
+    ['crepe', 'عبايات الكريب', 'Crepe Abayas', 'خامةٌ مطفية راقية تُبرز التطريز اليدوي وتفاصيل الخرز.', 'A refined matte fabric that lets hand embroidery and beadwork shine.', $classic],
+    ['lace', 'عبايات الدانتيل', 'Lace Abayas', 'دانتيلٌ رقيق بلمسةٍ أنثوية، لمناسباتكِ الخاصة.', 'Delicate lace with a feminine touch, for your special occasions.', $laceP],
 ] as $i => [$slug, $ar, $en, $dAr, $dEn, $cover]) {
     insert('collections', ['id' => $cols[$slug] = new_id(), 'slug' => $slug, 'nameAr' => $ar, 'nameEn' => $en, 'descAr' => $dAr, 'descEn' => $dEn, 'coverId' => $cover['id'], 'sort' => $i, 'published' => 1, 'createdAt' => now()]);
 }
@@ -123,54 +123,54 @@ foreach ([
 $care = ['careAr' => 'تنظيف جاف فقط. يُكوى على حرارة منخفضة.', 'careEn' => 'Dry clean only. Iron on low heat.'];
 $products = [
     [
-        'slug' => 'najma-abaya', 'nameAr' => 'عباية نجمة', 'nameEn' => 'Najma Abaya', 'price' => 1650, 'salePrice' => null,
+        'slug' => 'satin-sequin-panel-abaya', 'nameAr' => 'عباية الكوكبة الساتان · ألواح الترتر', 'nameEn' => 'Al Kawkaba Satin Abaya · Sequin Panels', 'fabricAr' => 'ساتان', 'fabricEn' => 'Satin', 'price' => 1650, 'salePrice' => null,
         'descAr' => 'عباية سهرة سوداء تمتد على واجهتها وأكمامها وحافتها ألواحٌ مطرزة يدوياً بالترتر، تلمع مع كل خطوة كنجمة في ليل.',
         'descEn' => 'A black evening abaya with hand-embroidered sequin panels down the front, sleeves and hem — it catches the light like a star at night.',
         'detailsAr' => "ألواح أمامية مطرزة بالترتر\nأكمام واسعة مطرزة\nحافة سفلية مطرزة", 'detailsEn' => "Sequin-embroidered front panels\nWide embroidered sleeves\nEmbroidered hem",
-        'gallery' => [$najma, ...$najmaQ], 'collection' => 'layali', 'category' => 'evening',
+        'gallery' => [$najma, ...$najmaQ], 'collection' => 'satin', 'category' => 'evening',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => true, 'isReady' => false, 'stock' => 6,
     ],
     [
-        'slug' => 'diya-abaya', 'nameAr' => 'عباية ضياء', 'nameEn' => 'Diya Abaya', 'price' => 890, 'salePrice' => null,
+        'slug' => 'crepe-embroidered-lapel-abaya', 'nameAr' => 'عباية الكوكبة الكريب · الياقة المطرزة', 'nameEn' => 'Al Kawkaba Crepe Abaya · Embroidered Lapel', 'fabricAr' => 'كريب', 'fabricEn' => 'Crepe', 'price' => 890, 'salePrice' => null,
         'descAr' => 'عباية سوداء كلاسيكية بياقة وأكمام مطرزة يدوياً بالخرز والترتر، تُغلق بمشبك ذهبي.',
         'descEn' => 'A classic black abaya with a lapel and cuffs hand-embroidered in beads and sequins, closed with a gold clasp.',
         'detailsAr' => "ياقة مطرزة بالخرز والترتر\nأكمام مطرزة\nمشبك ذهبي", 'detailsEn' => "Beaded, sequinned lapel\nEmbroidered cuffs\nGold clasp fastening",
-        'gallery' => [$classic, $lapel, $cuff, $clasp], 'collection' => 'noor', 'category' => 'occasion',
+        'gallery' => [$classic, $lapel, $cuff, $clasp], 'collection' => 'crepe', 'category' => 'occasion',
         'isNew' => true, 'isFeatured' => false, 'isLimited' => false, 'isReady' => true,
         'deliveryAr' => 'تُشحن خلال 24 ساعة', 'deliveryEn' => 'Ships within 24 hours',
     ],
     [
-        'slug' => 'lulu-abaya', 'nameAr' => 'عباية لؤلؤ', 'nameEn' => 'Lulu Abaya', 'price' => 1480, 'salePrice' => 1190,
+        'slug' => 'crepe-beaded-flower-abaya', 'nameAr' => 'عباية الكوكبة الكريب · ورود الخرز', 'nameEn' => 'Al Kawkaba Crepe Abaya · Beaded Flowers', 'fabricAr' => 'كريب', 'fabricEn' => 'Crepe', 'price' => 1480, 'salePrice' => 1190,
         'descAr' => 'عباية سهرة سوداء تتلألأ بتطريز الترتر على الصدر والأكمام.',
         'descEn' => 'A black evening abaya that glimmers with sequin embroidery across the front and sleeves.',
         'detailsAr' => "تطريز ترتر على الصدر\nأكمام مطرزة\nقصة واسعة", 'detailsEn' => "Sequin embroidery across the front\nEmbroidered sleeves\nRelaxed fit",
-        'gallery' => [$seq1, $seq2, ...$luluQ], 'collection' => 'layali', 'category' => 'evening',
+        'gallery' => [$seq1, $seq2, ...$luluQ], 'collection' => 'crepe', 'category' => 'evening',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => false, 'isReady' => false,
     ],
     [
-        'slug' => 'yasmin-abaya', 'nameAr' => 'عباية ياسمين', 'nameEn' => 'Yasmin Abaya', 'price' => 1250, 'salePrice' => null,
+        'slug' => 'lace-abaya', 'nameAr' => 'عباية الكوكبة الدانتيل', 'nameEn' => 'Al Kawkaba Lace Abaya', 'fabricAr' => 'دانتيل', 'fabricEn' => 'Lace', 'price' => 1250, 'salePrice' => null,
         'descAr' => 'عباية سوداء انسيابية تزيّن أطرافها وأكمامها دانتيل ناعم.',
         'descEn' => 'A flowing black abaya finished with delicate lace at the hem and sleeves.',
         'detailsAr' => "دانتيل على الأطراف\nأكمام دانتيل\nقصة انسيابية", 'detailsEn' => "Lace hem\nLace sleeves\nFlowing cut",
-        'gallery' => [$lace1, $laceP, $lace2, $lace3, ...$laceQ], 'collection' => 'layali', 'category' => 'wedding',
+        'gallery' => [$lace1, $laceP, $lace2, $lace3, ...$laceQ], 'collection' => 'lace', 'category' => 'wedding',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => false, 'isReady' => true,
         'deliveryAr' => 'تُشحن خلال 24 ساعة', 'deliveryEn' => 'Ships within 24 hours',
     ],
     [
-        'slug' => 'sahar-abaya', 'nameAr' => 'عباية سَحَر', 'nameEn' => 'Sahar Abaya', 'price' => 1890, 'salePrice' => null,
+        'slug' => 'satin-keffiyeh-abaya', 'nameAr' => 'عباية الكوكبة الساتان · نقشة الشماغ', 'nameEn' => 'Al Kawkaba Satin Abaya · Keffiyeh Trim', 'fabricAr' => 'ساتان', 'fabricEn' => 'Satin', 'price' => 1890, 'salePrice' => null,
         'descAr' => 'عباية سوداء بياقة وأكمام بنقشة الشماغ، تصميم يجمع الأصالة والأناقة العصرية.',
         'descEn' => 'A black abaya with keffiyeh-pattern lapels and cuffs — heritage detail with a modern line.',
         'detailsAr' => "ياقة بنقشة الشماغ\nأكمام بنقشة الشماغ\nإصدار محدود", 'detailsEn' => "Keffiyeh-pattern lapels\nKeffiyeh-pattern cuffs\nLimited edition",
-        'gallery' => [$check1, $check2, $check3, $vid1, $vid2], 'collection' => 'atelier', 'category' => 'occasion',
+        'gallery' => [$check1, $check2, $check3, $vid1, $vid2], 'collection' => 'satin', 'category' => 'occasion',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => true, 'isReady' => false, 'stock' => 5,
     ],
     [
-        'slug' => 'misk-abaya', 'nameAr' => 'عباية مِسك', 'nameEn' => 'Misk Abaya', 'price' => 720, 'salePrice' => null,
+        'slug' => 'satin-embroidered-sleeve-abaya', 'nameAr' => 'عباية الكوكبة الساتان · الأكمام المطرزة', 'nameEn' => 'Al Kawkaba Satin Abaya · Embroidered Sleeves', 'price' => 720, 'salePrice' => null,
         'descAr' => 'عباية من الساتان الأسود بقصة واسعة وأكمام مطرزة.',
         'descEn' => 'A black satin abaya with a relaxed cut and embroidered sleeves.',
         'fabricAr' => 'ساتان', 'fabricEn' => 'Satin',
         'detailsAr' => "قماش ساتان لامع\nأكمام مطرزة\nقصة واسعة", 'detailsEn' => "Lustrous satin\nEmbroidered sleeves\nRelaxed fit",
-        'gallery' => [$satin], 'collection' => 'essentials', 'category' => 'everyday',
+        'gallery' => [$satin], 'collection' => 'satin', 'category' => 'everyday',
         'isNew' => true, 'isFeatured' => false, 'isLimited' => false, 'isReady' => true,
     ],
 ];
@@ -197,10 +197,10 @@ foreach ($products as $i => $p) {
 $sections = [
     // desktop: three portrait photos side by side, sliding one step at a time; mobile: one full-screen photo or video per slide
     ['hero', ['slides' => [
-        ['media' => ref($seq1), 'mobileMedia' => ref($vid1, $poster1), 'eyebrowAr' => 'المجموعة الجديدة', 'eyebrowEn' => 'New Collection', 'headingAr' => 'أناقة تُروى بهدوء', 'headingEn' => 'Elegance, Quietly Told', 'textAr' => 'قطع خالدة صُممت لتليق بكِ في كل لحظة.', 'textEn' => 'Timeless pieces composed for every moment of yours.', 'ctaAr' => 'اكتشفي المجموعة', 'ctaEn' => 'Discover the Collection', 'link' => '/ar/collections/layali'],
+        ['media' => ref($seq1), 'mobileMedia' => ref($vid1, $poster1), 'eyebrowAr' => 'المجموعة الجديدة', 'eyebrowEn' => 'New Collection', 'headingAr' => 'أناقة تُروى بهدوء', 'headingEn' => 'Elegance, Quietly Told', 'textAr' => 'قطع خالدة صُممت لتليق بكِ في كل لحظة.', 'textEn' => 'Timeless pieces composed for every moment of yours.', 'ctaAr' => 'اكتشفي المجموعة', 'ctaEn' => 'Discover the Collection', 'link' => '/ar/collections/crepe'],
         ['media' => ref($najma)],
         ['media' => ref($laceP)],
-        ['media' => ref($check1), 'mobileMedia' => ref($vid2, $poster2), 'eyebrowAr' => 'إصدارات الأتيليه', 'eyebrowEn' => 'Atelier Editions', 'headingAr' => 'أصالةٌ بلمسة عصرية', 'headingEn' => 'Heritage, Modern Line', 'ctaAr' => 'تسوقي الآن', 'ctaEn' => 'Shop Now', 'link' => '/ar/collections/atelier'],
+        ['media' => ref($check1), 'mobileMedia' => ref($vid2, $poster2), 'eyebrowAr' => 'إصدار خاص', 'eyebrowEn' => 'Special Edition', 'headingAr' => 'أصالةٌ بلمسة عصرية', 'headingEn' => 'Heritage, Modern Line', 'ctaAr' => 'تسوقي الآن', 'ctaEn' => 'Shop Now', 'link' => '/ar/collections/satin'],
         ['media' => ref($classic)],
         ['media' => ref($lace2)],
         ['media' => ref($satin)],
@@ -214,7 +214,7 @@ $sections = [
     ['campaign', ['eyebrowAr' => 'صُنعت باليد', 'eyebrowEn' => 'Made by Hand', 'titleAr' => 'فنّ التفاصيل', 'titleEn' => 'The Art of Detail',
         'textAr' => 'خرزةٌ بعد خرزة، وغرزةٌ بعد غرزة… هنا تُصنع الفخامة التي تُرى عن قرب.', 'textEn' => 'Bead by bead, stitch by stitch — this is the luxury you see up close.',
         'layout' => 'mosaic', 'items' => [
-            ['media' => ref($najma), 'captionAr' => 'عباية نجمة', 'captionEn' => 'Najma Abaya'],
+            ['media' => ref($najma), 'captionAr' => 'ألواح الترتر', 'captionEn' => 'Sequin Panels'],
             ['media' => ref($luluQ[0]), 'captionAr' => 'ورود الخرز', 'captionEn' => 'Beaded Flowers'],
             ['media' => ref($lapel), 'captionAr' => 'الياقة المطرزة', 'captionEn' => 'The Lapel'],
             ['media' => ref($laceQ[2]), 'captionAr' => 'الدانتيل', 'captionEn' => 'Lace'],
@@ -228,7 +228,7 @@ $sections = [
     ['campaign', ['eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
         'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.', 'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
         'layout' => 'split', 'items' => [['media' => ref($vid1, $poster1)], ['media' => ref($vid2, $poster2)]],
-        'ctaAr' => 'تسوقي عباية سَحَر', 'ctaEn' => 'Shop the Sahar Abaya', 'link' => '/ar/product/sahar-abaya']],
+        'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya']],
     ['collections', ['titleAr' => 'المجموعات', 'titleEn' => 'The Collections', 'collectionIds' => []]],
     ['story', ['eyebrowAr' => 'قصتنا', 'eyebrowEn' => 'Our Story', 'titleAr' => 'من قريةٍ صغيرة… إلى حلمٍ يُرتدى', 'titleEn' => 'From a Small Village to a Dream You Can Wear',
         'textAr' => "من قريةٍ ريفيةٍ صغيرة بدأت الحكاية، هناك حيث نسجت مصممتنا أحلامها من خيوط الشمس.\n\nبإبرةٍ وخيط، ويدين لا تعرفان المستحيل، صنعت أول فستانٍ لها… فلفت الأنظار، وكان بداية الطريق.\n\nآمنت بموهبتها، فدرست تصميم الأزياء ونالت درجة البكالوريوس، ومضت تبتكر تصاميم عصرية تحمل بصمتها الخاصة.\n\nلم تُمنح الشهرة، بل صنعتها بيديها؛ قطعةً بعد قطعة، وثقةً بعد ثقة، حتى صار لها جمهورٌ ينتظر جديدها.\n\nعشر سنواتٍ من التصميم والتنفيذ، من الخطأ والتعلّم، من السهر والشغف…\nوفي كل عبايةٍ من الكوكبة، تجدين شيئاً من تلك الرحلة.",
