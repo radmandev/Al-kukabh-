@@ -126,9 +126,15 @@ function store_story(string $l): never
 {
     $s = settings();
     $t = dict($l);
-    $secs = rows("SELECT * FROM sections WHERE type IN ('story', 'campaign', 'values') ORDER BY sort");
-    $html = view('store/story', compact('l', 't', 's'));
-    foreach ($secs as $x) $html .= render_section($x['type'], $x['data'], $l, $s['currency']);
+    // Our Story page = the designer's story (text + her photo) followed by "Our Promise" — nothing else.
+    $html = '';
+    foreach (['story', 'values'] as $type) {
+        $x = row('SELECT * FROM sections WHERE type = ? ORDER BY published DESC, sort LIMIT 1', [$type]);
+        if (!$x) continue;
+        $d = (array) jdecode($x['data'], []);
+        unset($d['gallery']); // the homepage detail strip doesn't belong here
+        $html .= render_section($type, jencode($d), $l, $s['currency']);
+    }
     store_page($l, $html, ['title' => $t['story']]);
 }
 
