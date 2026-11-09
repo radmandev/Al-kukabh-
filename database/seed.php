@@ -102,6 +102,16 @@ $poster1 = brand('videos/WhatsApp Video 2026-11-07 at 4.00.54 PM.poster.jpg', '�
 $poster2 = brand('videos/WhatsApp Video 2026-11-07 at 4.00.55 PM.poster.jpg', 'عباية بنقشة الشماغ', 'Abaya with keffiyeh-pattern trim');
 $vid1 = brand('videos/WhatsApp Video 2026-11-07 at 4.00.54 PM.mp4', 'عباية بنقشة الشماغ', 'Abaya with keffiyeh-pattern trim', $poster1);
 $vid2 = brand('videos/WhatsApp Video 2026-11-07 at 4.00.55 PM.mp4', 'عباية بنقشة الشماغ', 'Abaya with keffiyeh-pattern trim', $poster2);
+// 9:16 clips for the "See it in motion" showcase (fast-start copies of the WhatsApp originals)
+$motion = [];
+foreach ([
+    ['kawkaba-satin-sparkle', 'عباية ساتان بأكمام لامعة', 'Satin abaya with sparkling sleeves', 'الساتان اللامع', 'Lustrous Satin'],
+    ['kawkaba-keffiyeh-sleeves', 'عباية بأكمام نقشة الشماغ', 'Abaya with keffiyeh-pattern sleeves', 'أكمام الشماغ', 'Keffiyeh Sleeves'],
+    ['kawkaba-chevron-satin', 'عباية ساتان بشريط متعرج', 'Satin abaya with chevron trim', 'الشريط المتعرج', 'Chevron Trim'],
+] as [$file, $altAr, $altEn, $capAr, $capEn]) {
+    $p = brand("videos/$file.poster.jpg", $altAr, $altEn);
+    $motion[] = ['media' => ref(brand("videos/$file.mp4", $altAr, $altEn, $p), $p), 'captionAr' => $capAr, 'captionEn' => $capEn];
+}
 
 // 5. catalog
 $cats = [];
@@ -227,7 +237,13 @@ $sections = [
     // the two phone videos, shown in their full 9:16 frame
     ['campaign', ['eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
         'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.', 'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
-        'layout' => 'split', 'items' => [['media' => ref($vid1, $poster1)], ['media' => ref($vid2, $poster2)]],
+        'layout' => 'showcase', 'items' => [
+            ['media' => ref($vid1, $poster1), 'captionAr' => 'نقشة الشماغ', 'captionEn' => 'Keffiyeh Trim'],
+            $motion[0],
+            $motion[1],
+            ['media' => ref($vid2, $poster2), 'captionAr' => 'الياقة والأكمام', 'captionEn' => 'Lapel & Cuffs'],
+            $motion[2],
+        ],
         'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya']],
     ['collections', ['titleAr' => 'المجموعات', 'titleEn' => 'The Collections', 'collectionIds' => []]],
     ['story', ['eyebrowAr' => 'قصتنا', 'eyebrowEn' => 'Our Story', 'titleAr' => 'من قريةٍ صغيرة… إلى حلمٍ يُرتدى', 'titleEn' => 'From a Small Village to a Dream You Can Wear',

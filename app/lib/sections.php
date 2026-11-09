@@ -44,7 +44,7 @@ function section_types(): array
         ]],
         'campaign' => ['label' => 'Editorial campaign', 'fields' => [
             ...$bi('eyebrow', 'Small label'), ...$bi('title', 'Title'), ...$bi('text', 'Text', 'textarea'),
-            ['key' => 'layout', 'label' => 'Layout', 'kind' => 'select', 'options' => ['full', 'split', 'grid', 'mosaic']],
+            ['key' => 'layout', 'label' => 'Layout', 'kind' => 'select', 'options' => ['full', 'split', 'grid', 'mosaic', 'showcase']],
             ['key' => 'items', 'label' => 'Media', 'kind' => 'list', 'fields' => [['key' => 'media', 'label' => 'Image / video', 'kind' => 'media'], ...$bi('caption', 'Caption')]],
             ...$cta,
         ]],

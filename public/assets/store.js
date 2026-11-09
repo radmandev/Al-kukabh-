@@ -538,6 +538,66 @@
     });
   }
 
+  // video showcase: the centre piece plays; neighbours sit smaller and dimmed, then the stage turns to the next
+  $$('[data-showcase]').forEach((root) => {
+    const items = $$('[data-show-item]', root);
+    const dots = $$('[data-show-dot]', root);
+    const n = items.length;
+    if (!n) return;
+    const MAX_MS = 9000;   // longest time one video stays in the centre
+    const MIN_MS = 4500;   // shortest (very short clips loop until then)
+    let active = 0, timer = 0, visible = false;
+    const narrow = () => innerWidth < 768;
+
+    const layout = () => {
+      items.forEach((el, i) => {
+        let o = i - active;
+        if (o > n / 2) o -= n;
+        if (o < -n / 2) o += n;
+        const a = Math.abs(o);
+        const step = narrow() ? 64 : 82;            // % of a card width between neighbours
+        const scale = a === 0 ? 1 : a === 1 ? 0.8 : 0.64;
+        const show = a <= (narrow() ? 1 : 2);
+        el.style.transform = `translateX(calc(-50% + ${o * step}%)) scale(${scale})`;
+        el.style.transformOrigin = 'center 40%';
+        el.style.opacity = show ? (a === 0 ? '1' : a === 1 ? '.55' : '.25') : '0';
+        el.style.filter = a === 0 ? 'none' : 'saturate(.6) brightness(.95)';
+        el.style.zIndex = String(10 - a);
+        el.style.pointerEvents = show ? 'auto' : 'none';
+        el.style.outlineColor = a === 0 ? 'rgba(214,189,138,.75)' : 'transparent';
+        el.setAttribute('aria-hidden', a === 0 ? 'false' : 'true');
+        const cap = $('[data-show-cap]', el);
+        if (cap) cap.style.opacity = a === 0 ? '1' : '0';
+        const v = $('[data-show-video]', el);
+        if (v) {
+          if (a === 0 && visible) { v.loop = true; v.play().catch(() => {}); }
+          else { v.pause(); if (a > 0) try { v.currentTime = 0; } catch {} }
+        }
+      });
+      dots.forEach((d, i) => {
+        d.firstElementChild.style.background = i === active ? 'var(--color-gold)' : '';
+        d.setAttribute('aria-current', i === active ? 'true' : 'false');
+      });
+    };
+
+    const schedule = () => {
+      clearTimeout(timer);
+      if (!visible || n < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const v = $('[data-show-video]', items[active]);
+      const dur = v && isFinite(v.duration) && v.duration > 0 ? v.duration * 1000 : MAX_MS;
+      timer = setTimeout(() => go(active + 1), Math.min(MAX_MS, Math.max(MIN_MS, dur)));
+    };
+    const go = (i) => { active = (i + n) % n; layout(); schedule(); };
+
+    items.forEach((el, i) => el.addEventListener('click', () => i !== active && go(i)));
+    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+    $$('[data-show-step]', root).forEach((b) => b.addEventListener('click', () => go(active + Number(b.dataset.showStep))));
+    addEventListener('resize', layout, { passive: true });
+    // only play while the showcase is on screen
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; layout(); schedule(); }, { threshold: 0.25 }).observe(root);
+    layout();
+  });
+
   // homepage blocks fade up the first time they scroll into view (content stays visible without JS)
   const reveals = [...document.querySelectorAll('[data-reveal]')].filter((el) => el.getBoundingClientRect().top > innerHeight);
   if (reveals.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

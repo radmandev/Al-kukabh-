@@ -235,6 +235,30 @@ function sec_campaign(array $d, string $l): string
         return '<section class="relative h-[90svh] min-h-[520px] overflow-hidden bg-ink text-ivory">' . media_el(mref($items[0]['media'] ?? null, $l))
             . '<div class="absolute inset-0 bg-black/30"></div><div class="absolute inset-x-0 bottom-0 pb-20">' . sec_head($d, $l, true, true) . sec_cta($d, $l, true) . '</div></section>';
     }
+    if ($layout === 'showcase' && $items) {
+        // rotating video showcase (behaviour in store.js → showcase): centre piece plays, neighbours wait smaller & dimmed
+        $h = $dots = '';
+        foreach ($items as $i => $it) {
+            $m = mref($it['media'] ?? null, $l);
+            $cap = L($it, 'caption', $l);
+            $inner = ($m['kind'] ?? '') === 'video'
+                ? '<video data-show-video class="absolute inset-0 h-full w-full object-cover" src="' . e($m['url']) . '"' . (!empty($m['poster']) ? ' poster="' . e(img_url($m['poster'], 720)) . '"' : '')
+                    . ' muted playsinline preload="' . ($i === 0 ? 'auto' : 'metadata') . '"' . (!empty($m['alt']) ? ' aria-label="' . e($m['alt']) . '"' : '') . '></video>'
+                : media_el($m, '330px');
+            $h .= '<figure data-show-item class="absolute left-1/2 top-0 w-[58vw] max-w-[320px] cursor-pointer transition-[transform,opacity,filter,outline-color] duration-[1.1s] ease-[var(--ease-lux)] md:w-[300px]"'
+                . ' style="transform:translateX(-50%);opacity:' . ($i === 0 ? '1' : '0') . ';outline:1px solid transparent;outline-offset:10px">'
+                . '<div class="relative aspect-[9/16] overflow-hidden bg-ink ring-1 ring-gold/40 shadow-[0_40px_70px_-25px_rgba(0,0,0,.55)]">' . $inner
+                . '<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"></div></div>'
+                . ($cap !== '' ? '<figcaption data-show-cap class="eyebrow mt-5 text-center text-gold transition-opacity duration-700" style="opacity:' . ($i === 0 ? '1' : '0') . '">' . e($cap) . '</figcaption>' : '')
+                . '</figure>';
+            $dots .= '<button type="button" data-show-dot="' . $i . '" aria-label="' . ($i + 1) . '" class="h-6 w-8 py-3"><span class="block h-px w-full bg-gold/30 transition"></span></button>';
+        }
+        $arrow = fn (int $dir, string $label, string $rot) => '<button type="button" data-show-step="' . $dir . '" aria-label="' . $label . '" class="grid h-11 w-11 place-items-center rounded-full border border-gold/40 text-gold transition hover:bg-gold hover:text-ivory">' . icon('arrow', 'h-4 w-4 ' . $rot) . '</button>';
+        return '<section class="overflow-hidden py-24 md:py-36" data-showcase>' . sec_head($d, $l)
+            . '<div class="relative mx-auto mt-14 h-[calc(58vw*16/9+3.5rem)] max-h-[640px] md:mt-16 md:h-[600px]" dir="ltr">' . $h . '</div>'
+            . '<div class="mt-8 flex items-center justify-center gap-5" dir="ltr">' . $arrow(-1, 'Previous', 'rotate-180') . '<div class="flex gap-1">' . $dots . '</div>' . $arrow(1, 'Next', '') . '</div>'
+            . sec_cta($d, $l) . '</section>';
+    }
     if ($layout === 'mosaic' && $items) {
         // editorial mosaic on black: one tall hero image + close-ups (desktop: 2x2 block + 2-column squares)
         $h = '';
