@@ -212,6 +212,7 @@ Privacy questions: alkawkabahabaya@gmail.com
 or WhatsApp: +967781519343
 
 We may update this policy from time to time; any changes will be posted on this page.', 'termsAr' => '', 'termsEn' => ''],
+        'migrations' => [],   // one-off data updates already applied to this database (see app/lib/migrations.php)
         'seo' => ['titleAr' => 'الكوكبة للعبايات', 'titleEn' => 'Al Kawkaba Abayas', 'descAr' => 'عبايات فاخرة مصممة بإتقان.', 'descEn' => 'Luxury abayas, masterfully crafted.', 'ogImage' => ''],
     ];
 }

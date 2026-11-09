@@ -10,6 +10,8 @@ if (PHP_SAPI === 'cli-server') {
 require dirname(__DIR__) . '/app/bootstrap.php';
 require APP . '/controllers/store.php';
 require APP . '/controllers/admin.php';
+require APP . '/lib/migrations.php';
+run_migrations(); // one-off data updates (no-op once applied)
 
 $path = request_path();
 $method = $_SERVER['REQUEST_METHOD'] === 'HEAD' ? 'GET' : $_SERVER['REQUEST_METHOD'];
