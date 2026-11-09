@@ -16,7 +16,7 @@ if ($u['role'] === 'ADMIN') array_push($links, ['/admin/settings', 'Settings'], 
 <link rel="icon" href="<?= e(img_url('/brand/logo.jpg', 128)) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Jost:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Almarai:wght@300;400;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500;700&display=swap">
 <link rel="stylesheet" href="/assets/app.css?v=<?= @filemtime(ROOT . '/public/assets/app.css') ?>">
 </head>
 <body class="admin min-h-screen bg-[#f4f2ee] text-ink">

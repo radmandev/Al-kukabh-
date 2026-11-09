@@ -20,10 +20,10 @@
 
 /* Google Fonts loaded in the page <head> */
 :root {
-  --f-display-en: "Cormorant Garamond";
+  --f-display-en: "Bodoni Moda";
   --f-sans-en: "Jost";
-  --f-display-ar: "Amiri";
-  --f-sans-ar: "IBM Plex Sans Arabic";
+  --f-display-ar: "Aref Ruqaa";
+  --f-sans-ar: "Almarai";
 }
 
 html[lang="ar"] { --font-display: var(--f-display-ar), serif; --font-sans: var(--f-sans-ar), system-ui, sans-serif; }
