@@ -48,6 +48,7 @@ function render_section(string $type, string $data, string $l, string $currency)
         'campaign' => sec_campaign($d, $l),
         'values' => sec_values($d, $l),
         'text' => sec_text($d, $l),
+        'teaser' => sec_teaser($d, $l),
         default => '',
     };
 }
@@ -312,4 +313,63 @@ function sec_text(array $d, string $l): string
         . ornament()
         . ($text !== '' ? '<p class="mx-auto mt-8 max-w-xl whitespace-pre-line text-base leading-8 text-stone md:text-lg md:leading-9">' . e($text) . '</p>' : '')
         . sec_cta($d, $l) . '</section>';
+}
+
+/* ---------- coming-soon teaser: veiled photo, falling gold, optional countdown, "notify me" (store.js → countdown) ---------- */
+
+function sec_teaser(array $d, string $l): string
+{
+    $m = mref($d['media'] ?? null, $l);
+    $date = (string) ($d['launchDate'] ?? '');
+    $launch = preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) && strtotime($date . ' 00:00:00') > time() ? $date . 'T00:00:00' : '';
+    $ar = $l === 'ar';
+    // falling gold dust: fixed pseudo-random layout so the markup is stable between requests
+    $snow = '';
+    for ($i = 0; $i < 34; $i++) {
+        $x = ($i * 37 + 11) % 100; $size = 2 + ($i * 7) % 5; $dur = 9 + ($i * 13) % 11; $delay = -(($i * 17) % 20); $drift = (($i * 29) % 60) - 30;
+        $snow .= "<span style=\"left:{$x}%;width:{$size}px;height:{$size}px;animation-duration:{$dur}s;animation-delay:{$delay}s;--dx:{$drift}px\"></span>";
+    }
+    $unit = fn (string $k, string $lab) => '<div class="flex min-w-16 flex-col items-center rounded-2xl border border-gold-soft/30 bg-white/5 px-3 py-3 backdrop-blur md:min-w-20">'
+        . '<span data-cd="' . $k . '" class="display text-3xl text-gold-soft md:text-4xl">--</span><span class="mt-1 text-[11px] text-ivory/60">' . $lab . '</span></div>';
+    ob_start(); ?>
+<section class="relative isolate overflow-hidden bg-ink text-ivory" aria-label="<?= e(L($d, 'title', $l) . ' ' . L($d, 'year', $l)) ?>">
+  <!-- veiled backdrop: the same photo, dark and blurred, with a slow gold light passing over it -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute inset-0 scale-110 blur-[22px] brightness-[.32] saturate-[.7]"><?= media_el($m, '100vw') ?></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,189,138,.14),transparent_60%)]"></div>
+    <div class="teaser-sheen absolute inset-0"></div>
+    <div class="teaser-snow absolute inset-0" aria-hidden="true"><?= $snow ?></div>
+  </div>
+  <div class="mx-auto flex min-h-[88svh] max-w-3xl flex-col items-center justify-center px-6 py-20 text-center md:py-28">
+    <!-- arched window: a glimpse of the collection, kept in shadow -->
+    <div style="border-radius:999px 999px 18px 18px" class="relative mb-10 aspect-[3/4] w-36 overflow-hidden border border-gold-soft/50 p-1.5 shadow-[0_0_60px_-10px_rgba(214,189,138,.45)] md:w-44">
+      <div style="border-radius:999px 999px 12px 12px" class="relative h-full w-full overflow-hidden">
+        <div class="absolute inset-0 blur-[2px] brightness-[.55] contrast-125"><?= media_el($m, '200px', false, 'object-[center_30%]') ?></div>
+        <div class="teaser-sheen absolute inset-0"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent"></div>
+      </div>
+    </div>
+    <?php if (($e = L($d, 'eyebrow', $l)) !== ''): ?><p class="eyebrow text-gold-soft"><?= e($e) ?></p><?php endif ?>
+    <h2 class="display mt-4 text-5xl leading-tight md:text-7xl"><?= e(L($d, 'title', $l)) ?></h2>
+    <?php if (($y = L($d, 'year', $l)) !== ''): ?><p class="teaser-gold display mt-2 text-4xl md:text-6xl"<?= $ar ? '' : ' dir="ltr"' ?>><?= e($y) ?></p><?php endif ?>
+    <?= ornament() ?>
+    <?php if (($soon = L($d, 'soon', $l)) !== ''): ?><p class="teaser-gold mt-6 text-2xl font-bold tracking-[.3em] md:text-3xl"><?= e($soon) ?></p><?php endif ?>
+    <?php if (($tx = L($d, 'text', $l)) !== ''): ?><p class="mx-auto mt-6 max-w-xl whitespace-pre-line text-base leading-8 text-ivory/75 md:text-lg md:leading-9"><?= e($tx) ?></p><?php endif ?>
+    <?php if ($launch): ?>
+      <div data-countdown="<?= e($launch) ?>" class="mt-10 flex gap-2 md:gap-3" dir="ltr">
+        <?= $unit('d', $ar ? 'يوم' : 'Days') . $unit('h', $ar ? 'ساعة' : 'Hours') . $unit('m', $ar ? 'دقيقة' : 'Min') . $unit('s', $ar ? 'ثانية' : 'Sec') ?>
+      </div>
+    <?php endif ?>
+    <?php if (($nl = L($d, 'notify', $l)) !== ''): ?>
+      <p class="mt-10 text-sm text-ivory/70"><?= e($nl) ?></p>
+      <form method="post" action="/<?= $l ?>/subscribe" data-newsletter class="mt-4 flex w-full max-w-md overflow-hidden rounded-full border border-gold-soft/50 bg-white/5 backdrop-blur">
+        <?= csrf_field() ?>
+        <label class="sr-only" for="teaser-email"><?= e($ar ? 'البريد الإلكتروني' : 'Email') ?></label>
+        <input id="teaser-email" name="email" type="email" required placeholder="<?= e($ar ? 'بريدكِ الإلكتروني' : 'Your email') ?>" class="min-w-0 flex-1 bg-transparent px-5 py-3 text-sm text-ivory outline-none placeholder:text-ivory/40">
+        <button class="shrink-0 bg-gold-soft px-5 text-sm font-bold text-ink transition hover:bg-ivory"><?= e(L($d, 'notifyBtn', $l) ?: ($ar ? 'أعلميني' : 'Notify me')) ?></button>
+      </form>
+    <?php endif ?>
+  </div>
+</section>
+<?php return (string) ob_get_clean();
 }

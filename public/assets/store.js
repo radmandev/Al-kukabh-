@@ -635,6 +635,19 @@
     });
   }
 
+  // coming-soon teaser countdown (only rendered when a launch date is set)
+  $$('[data-countdown]').forEach((box) => {
+    const target = new Date(box.dataset.countdown).getTime();
+    const put = (k, v) => { const el = $(`[data-cd="${k}"]`, box); if (el) el.textContent = String(v).padStart(2, '0'); };
+    const tick = () => {
+      const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      if (!s) { box.hidden = true; return; }
+      put('d', Math.floor(s / 86400)); put('h', Math.floor(s / 3600) % 24); put('m', Math.floor(s / 60) % 60); put('s', s % 60);
+      setTimeout(tick, 1000);
+    };
+    tick();
+  });
+
   // homepage blocks fade up the first time they scroll into view (content stays visible without JS)
   const reveals = [...document.querySelectorAll('[data-reveal]')].filter((el) => el.getBoundingClientRect().top > innerHeight);
   if (reveals.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

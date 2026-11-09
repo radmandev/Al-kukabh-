@@ -23,6 +23,13 @@ function run_migrations(): void
             }
         },
     ];
+    // Nov 2026: add the "Winter 2026 · 2027 — coming soon" teaser to the homepage (if the database has none)
+    $all['2026-11-winter-teaser'] = function (): void {
+        require_once APP . '/lib/teaser_content.php';
+        if (row("SELECT id FROM sections WHERE type = 'teaser' LIMIT 1")) return;
+        $sort = (int) (row('SELECT COALESCE(MAX(sort), 0) AS m FROM sections')['m'] ?? 0) + 1; // position is fixed at render time
+        insert('sections', ['id' => new_id(), 'type' => 'teaser', 'sort' => $sort, 'published' => 1, 'data' => jencode(winter_teaser_data())]);
+    };
     $pending = array_diff(array_keys($all), $done);
     if (!$pending) return;
     foreach ($pending as $key) {

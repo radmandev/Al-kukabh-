@@ -122,6 +122,13 @@ function store_home(string $l): never
     // "See it in motion" always comes right after New Arrivals (or at the end if there is none)
     $at = array_search('products', array_column($secs, 'type'), true);
     array_splice($secs, $at === false ? count($secs) : $at + 1, 0, [$entry]);
+    // the coming-soon teaser follows it: what's next, right after seeing the current pieces in motion
+    $tAt = array_search('teaser', array_column($secs, 'type'), true);
+    if ($tAt !== false) {
+        [$teaser] = array_splice($secs, $tAt, 1);
+        $mAt = array_search($entry['id'], array_column($secs, 'id'), true);
+        array_splice($secs, $mAt === false ? count($secs) : $mAt + 1, 0, [$teaser]);
+    }
     $html = '';
     foreach ($secs as $i => $x) {
         $isShowcase = !empty($x['motion']) || ($showcase && $x['id'] === $showcase['id']);

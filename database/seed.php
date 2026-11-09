@@ -6,6 +6,7 @@
 if (PHP_SAPI !== 'cli' && !defined('KW_SEED_FROM_ADMIN')) exit("Run from the command line: php database/seed.php\n");
 
 require_once dirname(__DIR__) . '/app/bootstrap.php';
+require_once APP . '/lib/teaser_content.php';
 
 // 1. schema (CREATE TABLE IF NOT EXISTS — harmless when already imported)
 foreach (preg_split('/;\s*\n/', (string) file_get_contents(__DIR__ . '/schema.sql')) as $stmt) {
@@ -232,6 +233,8 @@ $sections = [
             $motion[2],
         ],
         'ctaAr' => 'تسوقي عباية الشماغ', 'ctaEn' => 'Shop the Keffiyeh Abaya', 'link' => '/ar/product/satin-keffiyeh-abaya']],
+    // coming-soon teaser for the next season (rendered right after "See it in motion")
+    ['teaser', winter_teaser_data()],
     // editorial mosaic: one tall look + close-ups of the handwork
     ['campaign', ['titleAr' => 'فنّ التفاصيل', 'titleEn' => 'The Art of Detail',
         'textAr' => 'خرزةٌ بعد خرزة، وغرزةٌ بعد غرزة… هنا تُصنع الفخامة التي تُرى عن قرب.', 'textEn' => 'Bead by bead, stitch by stitch — this is the luxury you see up close.',

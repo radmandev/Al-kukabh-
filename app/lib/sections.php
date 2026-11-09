@@ -52,6 +52,13 @@ function section_types(): array
             ...$bi('title', 'Section title'),
             ['key' => 'items', 'label' => 'Values', 'kind' => 'list', 'fields' => [...$bi('title', 'Title'), ...$bi('text', 'Text', 'textarea')]],
         ]],
+        'teaser' => ['label' => 'Coming soon teaser (upcoming collection)', 'fields' => [
+            ...$bi('eyebrow', 'Small label'), ...$bi('title', 'Title'), ...$bi('year', 'Season / year'), ...$bi('soon', 'Coming soon word'),
+            ...$bi('text', 'Text', 'textarea'),
+            ['key' => 'media', 'label' => 'Veiled image (shown dark & blurred)', 'kind' => 'media'],
+            ['key' => 'launchDate', 'label' => 'Launch date YYYY-MM-DD (optional: shows a countdown)', 'kind' => 'text'],
+            ...$bi('notify', 'Sign-up line'), ...$bi('notifyBtn', 'Sign-up button'),
+        ]],
         'text' => ['label' => 'Text / statement', 'fields' => [
             ...$bi('eyebrow', 'Small label'), ...$bi('title', 'Title'), ...$bi('text', 'Text', 'textarea'), ...$cta,
         ]],
