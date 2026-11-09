@@ -265,16 +265,15 @@ function sec_campaign(array $d, string $l): string
             . sec_cta($d, $l) . '</section>';
     }
     if ($layout === 'mosaic' && $items) {
-        // editorial mosaic on black: one tall hero image + close-ups (desktop: 2x2 block + 2-column squares)
+        // editorial mosaic on black: one tall hero image + close-ups (desktop: 2x2 block + 2-column squares).
+        // No labels on the photos and no small heading above: the details speak for themselves.
         $h = '';
         foreach ($items as $i => $it) {
-            $cap = L($it, 'caption', $l);
             $h .= '<figure class="group relative overflow-hidden bg-onyx ' . ($i === 0 ? 'col-span-2 aspect-[4/5] md:row-span-2 md:aspect-auto' : 'aspect-square') . ($i > 4 ? ' hidden md:block' : '') . '">'
                 . '<div class="absolute inset-0 transition duration-[1.6s] ease-[var(--ease-lux)] group-hover:scale-105">' . media_el(mref($it['media'] ?? null, $l), $i === 0 ? '50vw' : '25vw') . '</div>'
-                . ($cap !== '' ? '<figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-4 pt-12 md:px-5 md:pb-5"><span class="eyebrow text-gold-soft">' . e($cap) . '</span></figcaption>' : '')
                 . '</figure>';
         }
-        return '<section class="bg-ink py-16 text-ivory md:py-36">' . sec_head($d, $l, true, true)
+        return '<section class="bg-ink py-16 text-ivory md:py-36">' . sec_head(array_diff_key($d, ['eyebrowAr' => 1, 'eyebrowEn' => 1]), $l, true, true)
             . '<div class="mx-auto mt-14 grid max-w-[1400px] grid-cols-2 gap-2 px-4 md:mt-16 md:grid-cols-4 md:gap-3 md:px-10">' . $h . '</div>' . sec_cta($d, $l, true) . '</section>';
     }
     // portrait phone videos keep their full 9:16 frame
