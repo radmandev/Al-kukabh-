@@ -521,6 +521,29 @@ function admin_settings_save(): never
     admin_back('/admin/settings?tab=' . $tab);
 }
 
+/**
+ * Rebuild photos, products, collections and the homepage from the brand files shipped in public/brand
+ * (same as `php database/seed.php`). Orders, customers, staff and settings are kept.
+ * For servers without a command line, e.g. after a deploy left the uploads folder empty.
+ */
+function admin_restore_store(): never
+{
+    require_staff(['ADMIN']);
+    @set_time_limit(600);
+    ignore_user_abort(true);
+    define('KW_SEED_FROM_ADMIN', true);
+    ob_start();
+    try {
+        require ROOT . '/database/seed.php';
+        $ok = true;
+    } catch (Throwable $e) {
+        error_log('restore failed: ' . $e->getMessage());
+        $ok = false;
+    }
+    ob_end_clean();
+    redirect('/admin/settings?' . ($ok ? 'restored=1' : 'restore_failed=1'));
+}
+
 function admin_staff(): never
 {
     $u = require_staff(['ADMIN']);

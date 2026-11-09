@@ -48,6 +48,7 @@ return [
     ['POST', "#^/admin/discounts/$ID/(toggle|delete)$#", 'admin_discount_action'],
     ['GET', '#^/admin/settings$#', 'admin_settings'],
     ['POST', '#^/admin/settings$#', 'admin_settings_save'],
+    ['POST', '#^/admin/settings/restore$#', 'admin_restore_store'],
     ['GET', '#^/admin/staff$#', 'admin_staff'],
     ['POST', '#^/admin/staff$#', 'admin_staff_save'],
     ['POST', "#^/admin/staff/$ID/role$#", 'admin_staff_role'],

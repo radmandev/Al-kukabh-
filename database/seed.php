@@ -2,10 +2,10 @@
 // Creates the tables (if missing) and loads the store with the brand photos & videos from public/brand:
 // products, collections, homepage sections and the admin user.
 // Safe to re-run: wipes catalog/content (NOT orders/users/settings) and recreates it.
-// Usage: php database/seed.php
-if (PHP_SAPI !== 'cli') exit("Run from the command line: php database/seed.php\n");
+// Usage: php database/seed.php   — or Admin → Settings → "Restore photos & store content" (admins only)
+if (PHP_SAPI !== 'cli' && !defined('KW_SEED_FROM_ADMIN')) exit("Run from the command line: php database/seed.php\n");
 
-require dirname(__DIR__) . '/app/bootstrap.php';
+require_once dirname(__DIR__) . '/app/bootstrap.php';
 
 // 1. schema (CREATE TABLE IF NOT EXISTS — harmless when already imported)
 foreach (preg_split('/;\s*\n/', (string) file_get_contents(__DIR__ . '/schema.sql')) as $stmt) {

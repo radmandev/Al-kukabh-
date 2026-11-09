@@ -45,3 +45,22 @@ $control = function (string $k, mixed $val) use ($human, $long, $tab): string {
     </div>
   </form>
 </div>
+
+<?php if (query('restored')): ?>
+  <p class="mt-8 rounded border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-900">✓ تمت استعادة الصور والمحتوى بنجاح. Photos and store content restored.</p>
+<?php elseif (query('restore_failed')): ?>
+  <p class="mt-8 rounded border border-red-300 bg-red-50 p-4 text-sm text-red-900">تعذّرت الاستعادة. Restore failed — check the server error log.</p>
+<?php endif ?>
+<section class="mt-10 rounded-md border border-amber-300 bg-amber-50 p-5 md:p-6">
+  <h2 class="font-medium">استعادة الصور ومحتوى المتجر · Restore photos &amp; store content</h2>
+  <p class="mt-2 text-sm leading-7 text-stone">
+    إذا ظهرت صور المتجر فارغة (مثلاً بعد نقل السيرفر)، هذا الزر يعيد بناء الصور والعبايات والمجموعات والصفحة الرئيسية من ملفات العلامة الموجودة مع الموقع.
+    لا يمسّ الطلبات ولا العملاء ولا الإعدادات. ⚠️ أي عباية أو صورة أضفتِها يدوياً من لوحة التحكم ستُحذف ويُعاد المتجر لمحتواه الأساسي.<br>
+    Rebuilds photos, abayas, collections and the homepage from the brand files shipped with the site. Orders, customers and settings are kept;
+    products or media added by hand in the dashboard are replaced.
+  </p>
+  <form method="post" action="/admin/settings/restore" class="mt-4" onsubmit="return confirm('استعادة الصور ومحتوى المتجر؟ قد تستغرق دقيقة.\nRestore photos and store content? This can take a minute.')">
+    <?= csrf_field() ?>
+    <button class="<?= A_BTN ?>">استعادة الآن · Restore now</button>
+  </form>
+</section>
