@@ -24,6 +24,16 @@ $address = L($s['contact'], 'address', $l);
           <button class="tracked text-[.68rem] text-gold-soft"><?= e($t['subscribe']) ?></button>
         </form>
       <?php endif ?>
+      <?php if (!empty($s['social']['instagram'])):
+          $ig = $s['social']['instagram'];
+          $igHandle = preg_match('~instagram\.com/([^/?#]+)~', $ig, $mm) ? '@' . $mm[1] : 'Instagram'; ?>
+        <!-- join the Al Kawkaba world on Instagram too -->
+        <a href="<?= e($ig) ?>" target="_blank" rel="noopener" class="group mx-auto mt-10 inline-flex items-center gap-3 rounded-full border border-gold-soft/50 px-6 py-3 text-gold-soft transition hover:border-gold-soft hover:bg-gold-soft hover:text-ink">
+          <?= icon('instagram', 'h-5 w-5') ?>
+          <span class="text-sm"><?= e($l === 'ar' ? 'تابعينا على إنستغرام' : 'Follow us on Instagram') ?></span>
+          <span dir="ltr" class="text-sm font-bold"><?= e($igHandle) ?></span>
+        </a>
+      <?php endif ?>
     </div>
   </div>
   <div class="mx-auto grid max-w-[1400px] grid-cols-2 gap-x-6 gap-y-12 px-6 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-12 md:px-10 md:py-16">
