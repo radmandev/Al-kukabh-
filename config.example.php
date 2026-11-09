@@ -1,5 +1,9 @@
 <?php
-// Copy this file to config.php and fill it in. config.php is git-ignored.
+// Copy this file and fill it in:
+// - on the server: save it as "alkawkaba-config.php" in the folder ABOVE the project
+//   (e.g. next to public_html). Deployments never touch that folder, so it is never deleted,
+//   and the default upload_dir below then keeps uploaded images there too.
+// - locally: config.php inside the project is fine (it is git-ignored).
 return [
     'db' => [
         'host' => '127.0.0.1',
@@ -16,7 +20,8 @@ return [
     // Public URL of the store, no trailing slash (used for SEO / social links).
     'site_url' => 'http://localhost:8000',
 
-    // Where uploaded images & videos are stored. Keep it outside public/ and on a persistent disk.
+    // Where uploaded images & videos are stored: next to this config file. Keep it out of the
+    // deployed project folder, or a deployment can wipe every uploaded photo.
     'upload_dir' => __DIR__ . '/uploads',
 
     'timezone' => 'Asia/Riyadh',

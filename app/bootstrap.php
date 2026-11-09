@@ -4,11 +4,18 @@ declare(strict_types=1);
 define('ROOT', dirname(__DIR__));
 define('APP', __DIR__);
 
-if (!is_file(ROOT . '/config.php')) {
-    http_response_code(500);
-    exit('Missing config.php — copy config.example.php to config.php and fill it in.');
+// On a server, keep the config ONE LEVEL ABOVE the project folder (alkawkaba-config.php): deployments
+// (git pull / Hostinger auto-deploy) replace the project folder and can never delete it there.
+// Locally, config.php inside the project works too.
+$configFile = null;
+foreach ([dirname(ROOT) . '/alkawkaba-config.php', ROOT . '/config.php'] as $f) {
+    if (is_file($f)) { $configFile = $f; break; }
 }
-$GLOBALS['__config'] = require ROOT . '/config.php';
+if (!$configFile) {
+    http_response_code(500);
+    exit('Missing config: copy config.example.php to "alkawkaba-config.php" in the folder ABOVE this project (recommended on servers), or to config.php inside it, and fill it in.');
+}
+$GLOBALS['__config'] = require $configFile;
 
 /** config('db.host') — dot-path lookup into config.php */
 function config(string $key, mixed $default = null): mixed

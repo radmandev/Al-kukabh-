@@ -24,7 +24,8 @@ Note: `php database/seed.php` wipes products, collections, categories, sections 
 1. Create a MySQL database + user in the hosting panel, then import `database/schema.sql` with phpMyAdmin.
 2. Upload the whole project. Point the domain's document root at `public/`.
    If you can't change the document root, upload into it as-is: the root `.htaccess` forwards requests to `public/` and blocks `app/`, `database/`, `uploads/` and `config.php`.
-3. Copy `config.example.php` → `config.php` and fill in the database, `secret`, `site_url`, and `'debug' => false`.
+3. Copy `config.example.php` to **`alkawkaba-config.php` in the folder above the project** (on Hostinger: `domains/<your-domain>/`, next to `public_html`) and fill in the database, `secret`, `site_url`, and `'debug' => false`.
+   Outside the project folder, deployments can never delete it, and uploads go to `uploads/` beside it, so they survive deployments too. (`config.php` inside the project also works, but a deploy that resets the folder deletes it.)
 4. Visit `/admin/login`. With no staff accounts yet, it asks you to **create the first admin account** (no SSH needed).
 5. Make sure `uploads/` is writable by PHP. `public/.user.ini` / `.htaccess` raise upload limits to 200MB for videos; some hosts cap this in their panel.
 
