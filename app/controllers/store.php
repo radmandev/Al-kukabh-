@@ -292,11 +292,25 @@ function store_quickview(string $l, string $id): never
 
 /* ---------- checkout & orders ---------- */
 
+/** All ISO 3166 country codes (for "we ship worldwide"). */
+const ALL_COUNTRIES = 'AD,AE,AF,AG,AI,AL,AM,AO,AR,AS,AT,AU,AW,AX,AZ,BA,BB,BD,BE,BF,BG,BH,BI,BJ,BL,BM,BN,BO,BQ,BR,BS,BT,BW,BY,BZ,CA,CC,CD,CF,CG,CH,CI,CK,CL,CM,CN,CO,CR,CU,CV,CW,CX,CY,CZ,DE,DJ,DK,DM,DO,DZ,EC,EE,EG,EH,ER,ES,ET,FI,FJ,FK,FM,FO,FR,GA,GB,GD,GE,GF,GG,GH,GI,GL,GM,GN,GP,GQ,GR,GT,GU,GW,GY,HK,HN,HR,HT,HU,ID,IE,IM,IN,IO,IQ,IR,IS,IT,JE,JM,JO,JP,KE,KG,KH,KI,KM,KN,KP,KR,KW,KY,KZ,LA,LB,LC,LI,LK,LR,LS,LT,LU,LV,LY,MA,MC,MD,ME,MF,MG,MH,MK,ML,MM,MN,MO,MP,MQ,MR,MS,MT,MU,MV,MW,MX,MY,MZ,NA,NC,NE,NF,NG,NI,NL,NO,NP,NR,NU,NZ,OM,PA,PE,PF,PG,PH,PK,PL,PM,PN,PR,PS,PT,PW,PY,QA,RE,RO,RS,RU,RW,SA,SB,SC,SD,SE,SG,SH,SI,SK,SL,SM,SN,SO,SR,SS,ST,SV,SX,SY,SZ,TC,TD,TG,TH,TJ,TK,TL,TM,TN,TO,TR,TT,TV,TW,TZ,UA,UG,US,UY,UZ,VA,VC,VE,VG,VI,VN,VU,WF,WS,YE,YT,ZA,ZM,ZW';
+
+/** Checkout country list: '*' = worldwide. Yemen and the Gulf come first, then the rest by name in the page language. */
+function shipping_countries(string $setting, string $l): array
+{
+    $list = trim($setting) === '*' ? explode(',', ALL_COUNTRIES) : array_values(array_filter(array_map('trim', explode(',', $setting))));
+    $first = array_values(array_intersect(['YE', 'SA', 'AE', 'KW', 'QA', 'BH', 'OM'], $list));
+    $rest = array_values(array_diff($list, $first));
+    $coll = class_exists('Collator') ? new Collator($l) : null;
+    usort($rest, fn ($a, $b) => $coll ? $coll->compare(region_name($a, $l), region_name($b, $l)) : strcmp(region_name($a, $l), region_name($b, $l)));
+    return [...$first, ...$rest];
+}
+
 function store_checkout(string $l): never
 {
     $s = settings();
     $u = current_user();
-    $countries = array_values(array_filter(array_map('trim', explode(',', (string) $s['shipping']['countries']))));
+    $countries = shipping_countries((string) $s['shipping']['countries'], $l);
     store_page($l, view('store/checkout', [
         'l' => $l, 't' => dict($l), 'methods' => payment_methods($s), 'countries' => $countries, 'user' => $u,
         'shipping' => ['flat' => (float) $s['shipping']['flat'], 'freeOver' => (float) $s['shipping']['freeOver']],
