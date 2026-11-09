@@ -145,7 +145,7 @@ function sec_products(array $d, string $l, string $currency): string
     if (!$ps) return '';
     $items = '';
     foreach ($ps as $i => $p) $items .= '<div class="w-[72%] shrink-0 snap-start sm:w-[42%] lg:w-[calc(25%-1.15rem)]">' . product_card($p, $l, $currency, $i < 2) . '</div>';
-    return '<section class="py-24 md:py-36">' . sec_head($d, $l) . '<div class="mt-12">' . rail(L($d, 'title', $l), $items) . '</div>' . sec_cta($d, $l) . '</section>';
+    return '<section class="py-16 md:py-36">' . sec_head($d, $l) . '<div class="mt-12">' . rail(L($d, 'title', $l), $items) . '</div>' . sec_cta($d, $l) . '</section>';
 }
 
 /* ---------- collections (editorial) ---------- */
@@ -172,16 +172,20 @@ function sec_collections(array $d, string $l): string
             . '<div class="relative ' . ($big ? 'aspect-[4/5] md:aspect-[21/9]' : 'aspect-[4/5]') . '">'
             . '<div class="absolute inset-0 transition duration-[1.6s] ease-[var(--ease-lux)] group-hover:scale-[1.04]">' . $m . '</div>'
             . '<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></div>'
-            . '<div class="absolute inset-x-0 bottom-0 p-8 text-center md:p-12">'
+            . '<div class="absolute inset-x-0 bottom-0 p-6 text-center md:p-12">'
             . '<h3 class="display ' . ($big ? 'text-4xl md:text-6xl' : 'text-3xl md:text-4xl') . '">' . e(L($c, 'name', $l)) . '</h3>'
             . ($desc !== '' ? '<p class="mx-auto mt-3 line-clamp-2 max-w-md text-sm text-ivory/75">' . e($desc) . '</p>' : '')
             . '<span class="eyebrow link-u mt-5 inline-block">' . e($t['shopNow']) . '</span></div></div></a>';
     };
+    $swipe = '';
+    foreach ($cols as $c) $swipe .= '<div class="w-[76%] shrink-0 snap-center">' . $tile($c, false) . '</div>';
     $first = array_shift($cols);
     $rest = '';
     foreach ($cols as $c) $rest .= $tile($c, false);
-    return '<section class="py-24 md:py-36">' . sec_head($d, $l) . '<div class="mt-12 space-y-4 px-4 md:space-y-6 md:px-10">' . $tile($first, true)
-        . ($cols ? '<div class="grid gap-4 md:gap-6 ' . (count($cols) % 3 === 0 ? 'md:grid-cols-3' : 'md:grid-cols-2') . '">' . $rest . '</div>' : '')
+    return '<section class="py-16 md:py-36">' . sec_head($d, $l)
+        . '<div class="no-scrollbar mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[12%] pb-2 md:hidden">' . $swipe . '</div>'
+        . '<div class="mt-12 hidden space-y-6 px-10 md:block">' . $tile($first, true)
+        . ($cols ? '<div class="grid gap-6 ' . (count($cols) % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2') . '">' . $rest . '</div>' : '')
         . '</div></section>';
 }
 
@@ -196,7 +200,7 @@ function sec_occasions(array $d, string $l): string
             . '<div class="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent"></div>'
             . '<p class="display absolute inset-x-0 bottom-8 text-center text-2xl md:text-3xl">' . e(L($it, 'label', $l)) . '</p></a>';
     }
-    return '<section class="py-24 md:py-36">' . sec_head($d, $l)
+    return '<section class="py-16 md:py-36">' . sec_head($d, $l)
         . '<div class="no-scrollbar mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 md:grid md:grid-cols-[repeat(auto-fit,minmax(0,1fr))] md:gap-6 md:px-10">' . $h . '</div></section>';
 }
 
@@ -206,7 +210,7 @@ function sec_ready(array $d, string $l, string $currency): string
     if (!$ps) return '';
     $h = '';
     foreach ($ps as $p) $h .= product_card($p, $l, $currency, false, true);
-    return '<section class="bg-sand py-24 md:py-36">' . sec_head($d, $l)
+    return '<section class="bg-sand py-16 md:py-36">' . sec_head($d, $l)
         . '<div class="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 px-4 md:gap-x-6 md:px-10 lg:grid-cols-4">' . $h . '</div>' . sec_cta($d, $l) . '</section>';
 }
 
@@ -219,12 +223,12 @@ function sec_story(array $d, string $l): string
         $g .= '<figure><div class="relative aspect-square overflow-hidden">' . media_el(mref($it['media'] ?? null, $l), '25vw') . '</div>'
             . ($cap !== '' ? '<figcaption class="eyebrow mt-3 text-ivory/60">' . e($cap) . '</figcaption>' : '') . '</figure>';
     }
-    return '<section class="bg-ink py-20 text-ivory md:py-32">'
+    return '<section class="bg-ink py-16 text-ivory md:py-32">'
         . '<div class="mx-auto grid max-w-[1400px] items-center gap-12 px-4 md:grid-cols-2 md:gap-20 md:px-10">'
         // photo first on phones (on top); from md up it moves to the end column → left in Arabic, text on the right
         . '<div class="relative aspect-[4/5] overflow-hidden md:order-last">' . media_el(mref($d['media'] ?? null, $l), '50vw') . '</div>'
         . '<div>' . sec_head($d, $l, false, true) . '<div class="px-6 md:px-10 [&>div]:text-start">' . sec_cta($d, $l, true) . '</div></div></div>'
-        . ($g ? '<div class="mx-auto mt-16 grid max-w-[1400px] grid-cols-2 gap-4 px-4 md:mt-24 md:grid-cols-4 md:gap-6 md:px-10">' . $g . '</div>' : '')
+        . ($g ? '<div class="mx-auto mt-16 hidden max-w-[1400px] grid-cols-2 gap-4 px-4 md:mt-24 md:grid md:grid-cols-4 md:gap-6 md:px-10">' . $g . '</div>' : '')
         . '</section>';
 }
 
@@ -255,7 +259,7 @@ function sec_campaign(array $d, string $l): string
             $dots .= '<button type="button" data-show-dot="' . $i . '" aria-label="' . ($i + 1) . '" class="h-6 w-8 py-3"><span class="block h-px w-full bg-gold/30 transition"></span></button>';
         }
         $arrow = fn (int $dir, string $label, string $rot) => '<button type="button" data-show-step="' . $dir . '" aria-label="' . $label . '" class="grid h-11 w-11 place-items-center rounded-full border border-gold/40 text-gold transition hover:bg-gold hover:text-ivory">' . icon('arrow', 'h-4 w-4 ' . $rot) . '</button>';
-        return '<section class="overflow-hidden py-24 md:py-36" data-showcase>' . sec_head($d, $l)
+        return '<section class="overflow-hidden py-16 md:py-36" data-showcase>' . sec_head($d, $l)
             . '<div class="relative mx-auto mt-14 h-[calc(58vw*16/9+3.5rem)] max-h-[640px] md:mt-16 md:h-[600px]" dir="ltr">' . $h . '</div>'
             . '<div class="mt-8 flex items-center justify-center gap-5" dir="ltr">' . $arrow(-1, 'Previous', 'rotate-180') . '<div class="flex gap-1">' . $dots . '</div>' . $arrow(1, 'Next', '') . '</div>'
             . sec_cta($d, $l) . '</section>';
@@ -265,12 +269,12 @@ function sec_campaign(array $d, string $l): string
         $h = '';
         foreach ($items as $i => $it) {
             $cap = L($it, 'caption', $l);
-            $h .= '<figure class="group relative overflow-hidden bg-onyx ' . ($i === 0 ? 'col-span-2 aspect-[4/5] md:row-span-2 md:aspect-auto' : 'aspect-square') . '">'
+            $h .= '<figure class="group relative overflow-hidden bg-onyx ' . ($i === 0 ? 'col-span-2 aspect-[4/5] md:row-span-2 md:aspect-auto' : 'aspect-square') . ($i > 4 ? ' hidden md:block' : '') . '">'
                 . '<div class="absolute inset-0 transition duration-[1.6s] ease-[var(--ease-lux)] group-hover:scale-105">' . media_el(mref($it['media'] ?? null, $l), $i === 0 ? '50vw' : '25vw') . '</div>'
                 . ($cap !== '' ? '<figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-4 pt-12 md:px-5 md:pb-5"><span class="eyebrow text-gold-soft">' . e($cap) . '</span></figcaption>' : '')
                 . '</figure>';
         }
-        return '<section class="bg-ink py-24 text-ivory md:py-36">' . sec_head($d, $l, true, true)
+        return '<section class="bg-ink py-16 text-ivory md:py-36">' . sec_head($d, $l, true, true)
             . '<div class="mx-auto mt-14 grid max-w-[1400px] grid-cols-2 gap-2 px-4 md:mt-16 md:grid-cols-4 md:gap-3 md:px-10">' . $h . '</div>' . sec_cta($d, $l, true) . '</section>';
     }
     // portrait phone videos keep their full 9:16 frame
@@ -282,7 +286,7 @@ function sec_campaign(array $d, string $l): string
             . '<div class="relative overflow-hidden ' . ($allVideo ? 'aspect-[9/16]' : ($layout === 'split' ? 'aspect-[4/5]' : 'aspect-[3/4]')) . '">' . media_el(mref($it['media'] ?? null, $l), '50vw') . '</div>'
             . ($cap !== '' ? '<figcaption class="eyebrow mt-3 text-stone">' . e($cap) . '</figcaption>' : '') . '</figure>';
     }
-    return '<section class="py-24 md:py-36">' . sec_head($d, $l)
+    return '<section class="py-16 md:py-36">' . sec_head($d, $l)
         . '<div class="mt-12 grid gap-3 px-4 md:gap-6 md:px-10 ' . ($allVideo ? 'mx-auto max-w-4xl ' : '') . ($layout === 'split' ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3') . '">' . $h . '</div>' . sec_cta($d, $l) . '</section>';
 }
 
@@ -294,7 +298,7 @@ function sec_values(array $d, string $l): string
             . '<h3 class="display mt-3 text-xl md:mt-4 md:text-2xl">' . e(L($it, 'title', $l)) . '</h3>'
             . '<p class="mx-auto mt-2 max-w-xs text-xs leading-6 text-ivory/60 md:mt-3 md:text-sm md:leading-7">' . e(L($it, 'text', $l)) . '</p></div>';
     }
-    return '<section class="border-y border-gold/40 bg-onyx py-24 text-ivory md:py-32">' . sec_head($d, $l, true, true)
+    return '<section class="border-y border-gold/40 bg-onyx py-16 text-ivory md:py-32">' . sec_head($d, $l, true, true)
         . '<div class="mx-auto mt-12 grid max-w-[1200px] grid-cols-2 gap-px bg-gold/20 md:mt-16 lg:grid-cols-3">' . $h . '</div></section>';
 }
 
@@ -303,7 +307,7 @@ function sec_text(array $d, string $l): string
     $eyebrow = L($d, 'eyebrow', $l);
     $title = L($d, 'title', $l);
     $text = L($d, 'text', $l);
-    return '<section class="mx-auto max-w-3xl px-6 pb-4 pt-24 text-center md:pb-8 md:pt-36">'
+    return '<section class="mx-auto max-w-3xl px-6 pb-2 pt-16 text-center md:pb-8 md:pt-36">'
         . ($eyebrow !== '' ? '<p class="eyebrow text-gold">' . e($eyebrow) . '</p>' : '')
         . ($title !== '' ? '<h2 class="display mt-5 text-4xl leading-tight md:text-6xl">' . e($title) . '</h2>' : '')
         . ornament()

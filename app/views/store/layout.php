@@ -62,7 +62,7 @@ $navLink = 'tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-
 
 <header data-header data-home="<?= $isHome ? '1' : '' ?>" data-solid="<?= e($solid) ?>" data-clear="<?= e($clear) ?>"
   class="<?= $isHome ? 'fixed' : 'sticky' ?> inset-x-0 top-0 z-50 border-b text-gold-soft transition-[background-color,border-color,box-shadow] duration-700 <?= $isHome ? $clear : $solid ?>">
-  <div class="mx-auto grid h-20 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-4 md:h-24 md:px-10">
+  <div class="mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-4 md:h-24 md:px-10">
     <div class="flex items-center gap-4 xl:gap-7">
       <button type="button" class="xl:hidden" data-drawer-open aria-label="<?= e($t['menu']) ?>"><?= icon('menu') ?></button>
       <button type="button" data-search-open aria-label="<?= e($t['search']) ?>" class="flex items-center gap-2">
@@ -75,7 +75,7 @@ $navLink = 'tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-
       </nav>
     </div>
     <a href="/<?= $l ?>" class="flex items-center px-6 xl:px-10" aria-label="<?= e($brandName) ?>">
-      <?= img_fixed($logo, 84, $brandName, 'h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-gold-soft shadow-[0_0_28px_rgba(214,189,138,.45)] transition-transform duration-500 hover:scale-105 md:h-[84px] md:w-[84px]') ?>
+      <?= img_fixed($logo, 84, $brandName, 'h-12 w-12 shrink-0 rounded-full object-cover ring-[1.5px] ring-gold-soft shadow-[0_0_22px_rgba(214,189,138,.4)] transition-transform duration-500 hover:scale-105 md:h-[84px] md:w-[84px] md:ring-2') ?>
     </a>
     <div class="flex items-center justify-end gap-4 md:gap-5">
       <nav class="me-4 hidden items-center gap-6 xl:flex 2xl:gap-8" aria-label="More">
@@ -169,7 +169,7 @@ $navLink = 'tracked link-u whitespace-nowrap text-[.68rem] font-bold transition-
 <?php if (wa_number() !== ''): ?>
 <!-- floating WhatsApp: straight to a chat with the store -->
 <a href="<?= e(wa_link()) ?>" target="_blank" rel="noopener" aria-label="<?= e($t['chatWhatsapp']) ?>" title="<?= e($t['chatWhatsapp']) ?>" data-wa-fab
-   class="fixed bottom-5 start-5 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_10px_30px_-8px_rgba(0,0,0,.45)] ring-2 ring-white/70 transition hover:scale-105 md:bottom-7 md:start-7"><?= wa_icon('h-7 w-7') ?></a>
+   class="fixed bottom-4 start-4 z-30 grid h-12 w-12 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_10px_30px_-8px_rgba(0,0,0,.45)] ring-2 ring-white/70 transition hover:scale-105 md:bottom-7 md:start-7 md:h-14 md:w-14"><?= wa_icon('h-6 w-6 md:h-7 md:w-7') ?></a>
 <?php endif ?>
 <script>window.KW = <?= json_encode(['l' => $l, 'currency' => $s['currency'], 't' => $t, 'wa' => wa_number()], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
 <script src="/assets/store.js?v=<?= @filemtime(ROOT . '/public/assets/store.js') ?>" defer></script>

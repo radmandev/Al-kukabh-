@@ -26,14 +26,14 @@ $address = L($s['contact'], 'address', $l);
       <?php endif ?>
     </div>
   </div>
-  <div class="mx-auto grid max-w-[1400px] gap-12 px-6 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:px-10">
-    <div>
-      <?= img_fixed($s['brand']['logoUrl'], 96, L($s['brand'], 'name', $l), 'h-24 w-24 rounded-full object-cover') ?>
+  <div class="mx-auto grid max-w-[1400px] grid-cols-2 gap-x-6 gap-y-12 px-6 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-12 md:px-10 md:py-16">
+    <div class="col-span-2 flex flex-col items-center text-center md:col-span-1 md:items-start md:text-start">
+      <?= img_fixed($s['brand']['logoUrl'], 96, L($s['brand'], 'name', $l), 'h-20 w-20 rounded-full object-cover md:h-24 md:w-24') ?>
       <p class="mt-6 max-w-xs text-sm leading-7 text-ivory/60"><?= e(L($s['brand'], 'about', $l)) ?></p>
     </div>
     <?= $col($t['shop'], [["/$l/shop?tag=new", $t['newArrivals']], ["/$l/collections", $t['collections']], ["/$l/shop?category=occasion", $t['occasion']], ["/$l/shop?category=everyday", $t['everyday']], ["/$l/shop?tag=limited", $t['limited']]]) ?>
     <?= $col($t['customerService'], [["/$l/track", $t['trackOrder']], ["/$l/policies/shipping", $t['shippingPolicy']], ["/$l/policies/returns", $t['returns']], ["/$l/policies/privacy", $t['privacy']], ["/$l/policies/terms", $t['terms']]]) ?>
-    <div>
+    <div class="col-span-2 border-t border-white/10 pt-10 md:col-span-1 md:border-0 md:pt-0">
       <p class="eyebrow mb-5 text-gold-soft"><?= e($t['contact']) ?></p>
       <ul class="space-y-3 text-sm text-ivory/70">
         <?php if ($s['contact']['email']): ?><li><a href="mailto:<?= e($s['contact']['email']) ?>" class="link-u"><?= e($s['contact']['email']) ?></a></li><?php endif ?>

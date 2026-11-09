@@ -24,12 +24,41 @@ function store_redirect_locale(string $path): never
     redirect("/$lang" . ($path === '/' ? '' : $path) . $qs, 307);
 }
 
+/**
+ * The homepage is photos only: drop video slides / mobile videos from the hero, video items from other blocks,
+ * and skip blocks that would be left empty (e.g. the video showcase). Videos still appear on product pages.
+ */
+function home_without_video(string $type, string $json): ?string
+{
+    $d = (array) jdecode($json, []);
+    $isVid = fn ($m) => is_array($m) && ($m['kind'] ?? '') === 'video';
+    if ($type === 'hero') {
+        $slides = [];
+        foreach ((array) ($d['slides'] ?? []) as $sl) {
+            if (!is_array($sl) || $isVid($sl['media'] ?? null)) continue;
+            if ($isVid($sl['mobileMedia'] ?? null)) unset($sl['mobileMedia']);
+            $slides[] = $sl;
+        }
+        if (!$slides) return null;
+        $d['slides'] = $slides;
+    }
+    foreach (['items', 'gallery'] as $k) {
+        if (!isset($d[$k]) || !is_array($d[$k])) continue;
+        $d[$k] = array_values(array_filter($d[$k], fn ($it) => !(is_array($it) && $isVid($it['media'] ?? null))));
+        if (!$d[$k] && in_array($type, ['campaign', 'occasions'], true)) return null;
+    }
+    if ($isVid($d['media'] ?? null)) unset($d['media']);
+    return jencode($d);
+}
+
 function store_home(string $l): never
 {
     $s = settings();
     $html = '';
     foreach (rows('SELECT * FROM sections WHERE published = 1 ORDER BY sort') as $i => $x) {
-        $sec = render_section($x['type'], $x['data'], $l, $s['currency']);
+        $data = home_without_video($x['type'], $x['data']);
+        if ($data === null) continue;
+        $sec = render_section($x['type'], $data, $l, $s['currency']);
         // every block after the first fades up as it scrolls into view (store.js)
         $html .= $i === 0 ? $sec : '<div data-reveal>' . $sec . '</div>';
     }
