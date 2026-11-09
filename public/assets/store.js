@@ -410,7 +410,7 @@
   });
 
   /* ---------- hero slideshow ---------- */
-  const IMAGE_MS = 3000;
+  const IMAGE_MS = 2500;
   const VIDEO_MAX_MS = 90000; // safety net if a video never fires "ended" (e.g. autoplay blocked)
   $$('[data-hero]').forEach((root) => {
     const { slides, strip } = JSON.parse(root.dataset.hero);
@@ -558,8 +558,8 @@
     const dots = $$('[data-show-dot]', root);
     const n = items.length;
     if (!n) return;
-    const MAX_MS = 9000;   // longest time one video stays in the centre
-    const MIN_MS = 4500;   // shortest (very short clips loop until then)
+    const MAX_MS = 5000;   // longest time one video stays in the centre
+    const MIN_MS = 3500;   // shortest (very short clips loop until then)
     let active = 0, timer = 0, visible = false;
     const narrow = () => innerWidth < 768;
 
