@@ -38,6 +38,20 @@ function brand_crop(string $file, array $rect, string $altAr, string $altEn): ar
     }
 }
 
+/** Split a 2×2 detail collage into its four close-ups; $inset (fraction) trims the frame/gutters. */
+function brand_quads(string $file, float $inset, array $alts): array
+{
+    [$w, $h] = getimagesize(ROOT . '/public/brand/' . $file);
+    $qw = intdiv($w, 2); $qh = intdiv($h, 2);
+    $ix = (int) round($w * $inset); $iy = (int) round($h * $inset);
+    $out = [];
+    foreach ([[0, 0], [1, 0], [0, 1], [1, 1]] as $k => [$cx, $cy]) {
+        [$ar, $en] = $alts[$k];
+        $out[] = brand_crop($file, [$cx * $qw + $ix, $cy * $qh + $iy, $qw - 2 * $ix, $qh - 2 * $iy], $ar, $en);
+    }
+    return $out;
+}
+
 /** Section media field: what the homepage editor stores ({id, url, kind, poster?, alt}). */
 function ref(array $m, ?array $poster = null): array
 {
@@ -69,6 +83,20 @@ $check1 = brand('WhatsApp Image 2026-11-07 at 5.44.07 PM.jpeg', 'عباية سو
 $check2 = brand('WhatsApp Image 2026-11-07 at 2.43.24 PM.jpeg', 'ياقة وأكمام بنقشة الشماغ', 'Keffiyeh-pattern lapel and cuffs');
 $check3 = brand('WhatsApp Image 2026-11-07 at 2.42.57 PM.jpeg', 'قماش العباية بحافة الشماغ', 'Abaya fabric with keffiyeh-pattern edge');
 $satin = brand('WhatsApp Image 2026-11-07 at 2.44.00 PM (1).jpeg', 'عباية ساتان بأكمام مطرزة', 'Satin abaya with embroidered sleeves');
+$najma = brand('Gemini_Generated_Image_h6ldfch6ldfch6ld.jpeg', 'عباية سوداء بألواح مطرزة بالترتر', 'Black abaya with sequin-embroidered panels');
+$najmaQ = brand_quads('videos/Gemini_Generated_Image_lrkfublrkfublrkf.jpeg', 0.035, [
+    ['ألواح أمامية مطرزة بالترتر', 'Sequin-embroidered front panels'], ['كم مطرز بالترتر', 'Sequin-embroidered sleeve'],
+    ['تطريز يلمع مع الحركة', 'Embroidery that catches the light'], ['حافة سفلية مطرزة', 'Embroidered hem'],
+]);
+$luluQ = brand_quads('videos/WhatsApp Image 2026-11-06 at 5.10.35 PM.jpeg', 0.012, [
+    ['وردة مطرزة بالخرز والترتر', 'Beaded, sequinned flower'], ['أكمام شيفون مطرزة', 'Embroidered chiffon sleeve'],
+    ['ورود على الصدر', 'Flowers across the front'], ['تطريز على الكتف', 'Embroidery at the shoulder'],
+]);
+$laceP = brand('videos/Opulent black lace abaya portrait.png', 'عباية سوداء بأكمام دانتيل مطرزة', 'Black abaya with embroidered lace sleeves');
+$laceQ = brand_quads('Gemini_Generated_Image_u8cfceu8cfceu8cf.jpeg', 0.01, [
+    ['دانتيل على الأكمام', 'Lace at the sleeves'], ['شريط دانتيل أمامي', 'Lace front panel'],
+    ['حافة الكم المخرّمة', 'Scalloped lace cuff'], ['حافة سفلية من الدانتيل', 'Lace hem'],
+]);
 $house = brand('videos/WhatsApp Image 2026-11-08 at 7.48.19 PM.jpeg', 'الكوكبة للعبايات', 'Al Kawkaba Abayas');
 $poster1 = brand('videos/WhatsApp Video 2026-11-07 at 4.00.54 PM.poster.jpg', 'عباية بنقشة الشماغ', 'Abaya with keffiyeh-pattern trim');
 $poster2 = brand('videos/WhatsApp Video 2026-11-07 at 4.00.55 PM.poster.jpg', 'عباية بنقشة الشماغ', 'Abaya with keffiyeh-pattern trim');
@@ -95,6 +123,14 @@ foreach ([
 $care = ['careAr' => 'تنظيف جاف فقط. يُكوى على حرارة منخفضة.', 'careEn' => 'Dry clean only. Iron on low heat.'];
 $products = [
     [
+        'slug' => 'najma-abaya', 'nameAr' => 'عباية نجمة', 'nameEn' => 'Najma Abaya', 'price' => 1650, 'salePrice' => null,
+        'descAr' => 'عباية سهرة سوداء تمتد على واجهتها وأكمامها وحافتها ألواحٌ مطرزة يدوياً بالترتر، تلمع مع كل خطوة كنجمة في ليل.',
+        'descEn' => 'A black evening abaya with hand-embroidered sequin panels down the front, sleeves and hem — it catches the light like a star at night.',
+        'detailsAr' => "ألواح أمامية مطرزة بالترتر\nأكمام واسعة مطرزة\nحافة سفلية مطرزة", 'detailsEn' => "Sequin-embroidered front panels\nWide embroidered sleeves\nEmbroidered hem",
+        'gallery' => [$najma, ...$najmaQ], 'collection' => 'layali', 'category' => 'evening',
+        'isNew' => true, 'isFeatured' => true, 'isLimited' => true, 'isReady' => false, 'stock' => 6,
+    ],
+    [
         'slug' => 'diya-abaya', 'nameAr' => 'عباية ضياء', 'nameEn' => 'Diya Abaya', 'price' => 890, 'salePrice' => null,
         'descAr' => 'عباية سوداء كلاسيكية بياقة وأكمام مطرزة يدوياً بالخرز والترتر، تُغلق بمشبك ذهبي.',
         'descEn' => 'A classic black abaya with a lapel and cuffs hand-embroidered in beads and sequins, closed with a gold clasp.',
@@ -108,7 +144,7 @@ $products = [
         'descAr' => 'عباية سهرة سوداء تتلألأ بتطريز الترتر على الصدر والأكمام.',
         'descEn' => 'A black evening abaya that glimmers with sequin embroidery across the front and sleeves.',
         'detailsAr' => "تطريز ترتر على الصدر\nأكمام مطرزة\nقصة واسعة", 'detailsEn' => "Sequin embroidery across the front\nEmbroidered sleeves\nRelaxed fit",
-        'gallery' => [$seq1, $seq2], 'collection' => 'layali', 'category' => 'evening',
+        'gallery' => [$seq1, $seq2, ...$luluQ], 'collection' => 'layali', 'category' => 'evening',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => false, 'isReady' => false,
     ],
     [
@@ -116,7 +152,7 @@ $products = [
         'descAr' => 'عباية سوداء انسيابية تزيّن أطرافها وأكمامها دانتيل ناعم.',
         'descEn' => 'A flowing black abaya finished with delicate lace at the hem and sleeves.',
         'detailsAr' => "دانتيل على الأطراف\nأكمام دانتيل\nقصة انسيابية", 'detailsEn' => "Lace hem\nLace sleeves\nFlowing cut",
-        'gallery' => [$lace1, $lace2, $lace3], 'collection' => 'layali', 'category' => 'wedding',
+        'gallery' => [$lace1, $laceP, $lace2, $lace3, ...$laceQ], 'collection' => 'layali', 'category' => 'wedding',
         'isNew' => true, 'isFeatured' => true, 'isLimited' => false, 'isReady' => true,
         'deliveryAr' => 'تُشحن خلال 24 ساعة', 'deliveryEn' => 'Ships within 24 hours',
     ],
@@ -162,34 +198,57 @@ $sections = [
     // desktop: three portrait photos side by side, sliding one step at a time; mobile: one full-screen photo or video per slide
     ['hero', ['slides' => [
         ['media' => ref($seq1), 'mobileMedia' => ref($vid1, $poster1), 'eyebrowAr' => 'المجموعة الجديدة', 'eyebrowEn' => 'New Collection', 'headingAr' => 'أناقة تُروى بهدوء', 'headingEn' => 'Elegance, Quietly Told', 'textAr' => 'قطع خالدة صُممت لتليق بكِ في كل لحظة.', 'textEn' => 'Timeless pieces composed for every moment of yours.', 'ctaAr' => 'اكتشفي المجموعة', 'ctaEn' => 'Discover the Collection', 'link' => '/ar/collections/layali'],
-        ['media' => ref($lace1)],
+        ['media' => ref($najma)],
+        ['media' => ref($laceP)],
         ['media' => ref($check1), 'mobileMedia' => ref($vid2, $poster2), 'eyebrowAr' => 'إصدارات الأتيليه', 'eyebrowEn' => 'Atelier Editions', 'headingAr' => 'أصالةٌ بلمسة عصرية', 'headingEn' => 'Heritage, Modern Line', 'ctaAr' => 'تسوقي الآن', 'ctaEn' => 'Shop Now', 'link' => '/ar/collections/atelier'],
         ['media' => ref($classic)],
         ['media' => ref($lace2)],
         ['media' => ref($satin)],
     ]]],
+    ['text', ['eyebrowAr' => 'الكوكبة للعبايات', 'eyebrowEn' => 'Al Kawkaba Abayas', 'titleAr' => 'فخامةٌ هادئة، تُصاغ بعناية', 'titleEn' => 'Quiet Luxury, Composed with Care',
+        'textAr' => 'في الكوكبة، نؤمن أن العباية ليست مجرد قطعة، بل حضورٌ يعكس ذوقكِ. نختار أقمشتنا بعناية، ونطرّز تفاصيلنا يدوياً، لتصلكِ كل عباية كما تستحقين.',
+        'textEn' => 'At Al Kawkaba, an abaya is more than a garment — it is a presence that reflects your taste. We choose our fabrics with care and finish every detail by hand, so each piece arrives as you deserve.',
+        'ctaAr' => 'قصتنا', 'ctaEn' => 'Our Story', 'link' => '/ar/story']],
     ['products', ['titleAr' => 'وصل حديثاً', 'titleEn' => 'New Arrivals', 'source' => 'new', 'limit' => 8, 'ctaAr' => 'عرض الكل', 'ctaEn' => 'View All', 'link' => '/ar/shop?tag=new']],
+    // editorial mosaic: one tall look + close-ups of the handwork
+    ['campaign', ['eyebrowAr' => 'صُنعت باليد', 'eyebrowEn' => 'Made by Hand', 'titleAr' => 'فنّ التفاصيل', 'titleEn' => 'The Art of Detail',
+        'textAr' => 'خرزةٌ بعد خرزة، وغرزةٌ بعد غرزة… هنا تُصنع الفخامة التي تُرى عن قرب.', 'textEn' => 'Bead by bead, stitch by stitch — this is the luxury you see up close.',
+        'layout' => 'mosaic', 'items' => [
+            ['media' => ref($najma), 'captionAr' => 'عباية نجمة', 'captionEn' => 'Najma Abaya'],
+            ['media' => ref($luluQ[0]), 'captionAr' => 'ورود الخرز', 'captionEn' => 'Beaded Flowers'],
+            ['media' => ref($lapel), 'captionAr' => 'الياقة المطرزة', 'captionEn' => 'The Lapel'],
+            ['media' => ref($laceQ[2]), 'captionAr' => 'الدانتيل', 'captionEn' => 'Lace'],
+            ['media' => ref($clasp), 'captionAr' => 'المشبك الذهبي', 'captionEn' => 'The Gold Clasp'],
+            ['media' => ref($najmaQ[1]), 'captionAr' => 'الترتر', 'captionEn' => 'Sequins'],
+            ['media' => ref($check2), 'captionAr' => 'نقشة الشماغ', 'captionEn' => 'Keffiyeh Pattern'],
+            ['media' => ref($laceQ[3]), 'captionAr' => 'الحافة المخرّمة', 'captionEn' => 'Scalloped Hem'],
+            ['media' => ref($luluQ[1]), 'captionAr' => 'أكمام الشيفون', 'captionEn' => 'Chiffon Sleeves'],
+        ], 'ctaAr' => 'اكتشفي القطع', 'ctaEn' => 'Discover the Pieces', 'link' => '/ar/shop']],
+    // the two phone videos, shown in their full 9:16 frame
+    ['campaign', ['eyebrowAr' => 'شاهديها بالحركة', 'eyebrowEn' => 'See It in Motion', 'titleAr' => 'انسيابٌ يُرى قبل أن يُلمس', 'titleEn' => 'A Drape You Can See',
+        'textAr' => 'التفاصيل الحقيقية تظهر حين تتحرك العباية؛ في انسياب القماش، ولمعة النقشة، وحركة الأكمام.', 'textEn' => 'True detail shows when an abaya moves — in the fall of the fabric, the gleam of the pattern, the sway of the sleeves.',
+        'layout' => 'split', 'items' => [['media' => ref($vid1, $poster1)], ['media' => ref($vid2, $poster2)]],
+        'ctaAr' => 'تسوقي عباية سَحَر', 'ctaEn' => 'Shop the Sahar Abaya', 'link' => '/ar/product/sahar-abaya']],
     ['collections', ['titleAr' => 'المجموعات', 'titleEn' => 'The Collections', 'collectionIds' => []]],
+    ['story', ['eyebrowAr' => 'قصتنا', 'eyebrowEn' => 'Our Story', 'titleAr' => 'من قريةٍ صغيرة… إلى حلمٍ يُرتدى', 'titleEn' => 'From a Small Village to a Dream You Can Wear',
+        'textAr' => "من قريةٍ ريفيةٍ صغيرة بدأت الحكاية، هناك حيث نسجت مصممتنا أحلامها من خيوط الشمس.\n\nبإبرةٍ وخيط، ويدين لا تعرفان المستحيل، صنعت أول فستانٍ لها… فلفت الأنظار، وكان بداية الطريق.\n\nآمنت بموهبتها، فدرست تصميم الأزياء ونالت درجة البكالوريوس، ومضت تبتكر تصاميم عصرية تحمل بصمتها الخاصة.\n\nلم تُمنح الشهرة، بل صنعتها بيديها؛ قطعةً بعد قطعة، وثقةً بعد ثقة، حتى صار لها جمهورٌ ينتظر جديدها.\n\nعشر سنواتٍ من التصميم والتنفيذ، من الخطأ والتعلّم، من السهر والشغف…\nوفي كل عبايةٍ من الكوكبة، تجدين شيئاً من تلك الرحلة.",
+        'textEn' => "The story began in a small country village, where our designer wove her dreams from threads of sunlight.\n\nWith a needle, a thread and hands that refused the impossible, she made her very first dress — and every eye turned to it. It was the beginning of the road.\n\nBelieving in her gift, she earned a bachelor's degree in fashion design and went on to create modern designs that carry her own signature.\n\nFame was never handed to her; she built it herself — piece by piece, trust by trust — until she had an audience waiting for every new creation.\n\nTen years of designing and making, of mistakes and learning, of late nights and passion…\nand in every Al Kawkaba abaya, you will find a piece of that journey.",
+        'media' => ref($house),
+        'gallery' => [
+            ['media' => ref($check3), 'captionAr' => 'الأقمشة', 'captionEn' => 'Fabric'],
+            ['media' => ref($najmaQ[0]), 'captionAr' => 'التطريز', 'captionEn' => 'Embroidery'],
+            ['media' => ref($cuff), 'captionAr' => 'التفصيل', 'captionEn' => 'Tailoring'],
+            ['media' => ref($laceQ[1]), 'captionAr' => 'اللمسات الأخيرة', 'captionEn' => 'Finishing'],
+        ],
+        'ctaAr' => 'اكتشفي تصاميمها', 'ctaEn' => 'Discover Her Designs', 'link' => '/ar/shop']],
+    // kept as drafts (they repeat the pieces above) — publish from Admin → Homepage if wanted
     ['occasions', ['titleAr' => 'تسوقي حسب المناسبة', 'titleEn' => 'Shop by Occasion', 'items' => [
         ['media' => ref($seq2), 'labelAr' => 'السهرات والمناسبات', 'labelEn' => 'Evening & Events', 'link' => '/ar/shop?category=evening'],
         ['media' => ref($satin), 'labelAr' => 'إطلالات يومية', 'labelEn' => 'Daily Wear', 'link' => '/ar/shop?category=everyday'],
         ['media' => ref($lace3), 'labelAr' => 'الأعراس', 'labelEn' => 'Weddings', 'link' => '/ar/shop?category=wedding'],
-        ['media' => ref($vid1, $poster1), 'labelAr' => 'قطع حصرية', 'labelEn' => 'Exclusive Pieces', 'link' => '/ar/shop?tag=limited'],
-    ]]],
-    ['ready', ['titleAr' => 'جاهزة للارتداء', 'titleEn' => 'Ready to Wear', 'textAr' => 'قطع متوفرة تُشحن إليكِ فوراً.', 'textEn' => 'Available now, shipped to you right away.', 'limit' => 4, 'ctaAr' => 'تسوقي الجاهز', 'ctaEn' => 'Shop Ready to Wear', 'link' => '/ar/shop?tag=ready']],
-    ['story', ['eyebrowAr' => 'الأتيليه', 'eyebrowEn' => 'The Atelier', 'titleAr' => 'حيث تولد كل قطعة', 'titleEn' => 'Where Every Piece Begins',
-        'textAr' => 'في مشغلنا، تمر كل عباية بأيدٍ خبيرة — من اختيار القماش إلى آخر غرزة تطريز. نؤمن أن الفخامة الحقيقية تكمن في التفاصيل التي لا تُرى.',
-        'textEn' => "In our atelier, every abaya passes through expert hands — from selecting the fabric to the final embroidered stitch. We believe true luxury lives in the details you don't see.",
-        'media' => ref($house),
-        'gallery' => [
-            ['media' => ref($check3), 'captionAr' => 'الأقمشة', 'captionEn' => 'Fabric'],
-            ['media' => ref($lapel), 'captionAr' => 'التطريز', 'captionEn' => 'Embroidery'],
-            ['media' => ref($cuff), 'captionAr' => 'التفصيل', 'captionEn' => 'Tailoring'],
-            ['media' => ref($clasp), 'captionAr' => 'اللمسات الأخيرة', 'captionEn' => 'Finishing'],
-        ],
-        'ctaAr' => 'قصتنا', 'ctaEn' => 'Our Story', 'link' => '/ar/story']],
-    ['campaign', ['eyebrowAr' => 'حملة الموسم', 'eyebrowEn' => 'Seasonal Campaign', 'titleAr' => 'ضوء الكوكبة', 'titleEn' => 'Light of Al Kawkaba', 'layout' => 'split',
-        'items' => [['media' => ref($vid2, $poster2)], ['media' => ref($check2)]], 'ctaAr' => 'اكتشفي', 'ctaEn' => 'Discover', 'link' => '/ar/collections/atelier']],
+        ['media' => ref($najma), 'labelAr' => 'قطع حصرية', 'labelEn' => 'Exclusive Pieces', 'link' => '/ar/shop?tag=limited'],
+    ]], false],
+    ['ready', ['titleAr' => 'جاهزة للارتداء', 'titleEn' => 'Ready to Wear', 'textAr' => 'قطع متوفرة تُشحن إليكِ فوراً.', 'textEn' => 'Available now, shipped to you right away.', 'limit' => 4, 'ctaAr' => 'تسوقي الجاهز', 'ctaEn' => 'Shop Ready to Wear', 'link' => '/ar/shop?tag=ready'], false],
     ['values', ['titleAr' => 'وعدنا لكِ', 'titleEn' => 'Our Promise', 'items' => [
         ['titleAr' => 'حِرفة متقنة', 'titleEn' => 'Premium Craftsmanship', 'textAr' => 'كل قطعة تُصنع بأيدٍ خبيرة.', 'textEn' => 'Every piece made by expert hands.'],
         ['titleAr' => 'تصاميم حصرية', 'titleEn' => 'Exclusive Designs', 'textAr' => 'تصاميم أصلية لا تتكرر.', 'textEn' => 'Original designs, never repeated.'],
@@ -199,7 +258,7 @@ $sections = [
         ['titleAr' => 'خدمة وتوصيل', 'titleEn' => 'Delivery & Care', 'textAr' => 'توصيل سريع وخدمة عملاء بانتظاركِ.', 'textEn' => 'Fast delivery and attentive client care.'],
     ]]],
 ];
-foreach ($sections as $i => [$type, $data]) insert('sections', ['id' => new_id(), 'type' => $type, 'sort' => $i, 'published' => 1, 'data' => jencode($data)]);
+foreach ($sections as $i => $sec) insert('sections', ['id' => new_id(), 'type' => $sec[0], 'sort' => $i, 'published' => (int) ($sec[2] ?? true), 'data' => jencode($sec[1])]);
 
 q("INSERT IGNORE INTO discounts (id, code, type, value) VALUES (?, 'WELCOME10', 'percent', 10)", [new_id()]);
 echo 'Seeded ' . count($products) . ' products, ' . count($cols) . ' collections, ' . count($sections) . " sections from public/brand. Admin: $email\n";
