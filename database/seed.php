@@ -135,7 +135,7 @@ foreach ([
 $care = ['careAr' => 'تنظيف جاف فقط. يُكوى على حرارة منخفضة.', 'careEn' => 'Dry clean only. Iron on low heat.'];
 $products = [
     [
-        'slug' => 'satin-sequin-panel-abaya', 'nameAr' => 'عباية الكوكبة الساتان · ألواح الترتر', 'nameEn' => 'Al Kawkaba Satin Abaya · Sequin Panels', 'fabricAr' => 'ساتان', 'fabricEn' => 'Satin', 'price' => 699, 'salePrice' => null,
+        'slug' => 'satin-sequin-panel-abaya', 'nameAr' => 'عباية الكوكبة الساتان · ألواح الترتر', 'nameEn' => 'Al Kawkaba Satin Abaya · Sequin Panels', 'fabricAr' => 'ساتان', 'fabricEn' => 'Satin', 'price' => 410, 'salePrice' => null,
         'descAr' => 'عباية سهرة سوداء تمتد على واجهتها وأكمامها وحافتها ألواحٌ مطرزة يدوياً بالترتر، تلمع مع كل خطوة كنجمة في ليل.',
         'descEn' => 'A black evening abaya with hand-embroidered sequin panels down the front, sleeves and hem — it catches the light like a star at night.',
         'detailsAr' => "ألواح أمامية مطرزة بالترتر\nأكمام واسعة مطرزة\nحافة سفلية مطرزة", 'detailsEn' => "Sequin-embroidered front panels\nWide embroidered sleeves\nEmbroidered hem",
@@ -143,7 +143,7 @@ $products = [
         'isNew' => true, 'isFeatured' => true, 'isLimited' => true, 'isReady' => false, 'stock' => 6,
     ],
     [
-        'slug' => 'crepe-embroidered-lapel-abaya', 'nameAr' => 'عباية الكوكبة الكريب · الياقة المطرزة', 'nameEn' => 'Al Kawkaba Crepe Abaya · Embroidered Lapel', 'fabricAr' => 'كريب', 'fabricEn' => 'Crepe', 'price' => 379, 'salePrice' => null,
+        'slug' => 'crepe-embroidered-lapel-abaya', 'nameAr' => 'عباية الكوكبة الكريب · الياقة المطرزة', 'nameEn' => 'Al Kawkaba Crepe Abaya · Embroidered Lapel', 'fabricAr' => 'كريب', 'fabricEn' => 'Crepe', 'price' => 290, 'salePrice' => null,
         'descAr' => 'عباية سوداء كلاسيكية بياقة وأكمام مطرزة يدوياً بالخرز والترتر، تُغلق بمشبك ذهبي.',
         'descEn' => 'A classic black abaya with a lapel and cuffs hand-embroidered in beads and sequins, closed with a gold clasp.',
         'detailsAr' => "ياقة مطرزة بالخرز والترتر\nأكمام مطرزة\nمشبك ذهبي", 'detailsEn' => "Beaded, sequinned lapel\nEmbroidered cuffs\nGold clasp fastening",
@@ -152,7 +152,7 @@ $products = [
         'deliveryAr' => 'تُشحن خلال 24 ساعة', 'deliveryEn' => 'Ships within 24 hours',
     ],
     [
-        'slug' => 'crepe-beaded-flower-abaya', 'nameAr' => 'عباية الكوكبة الكريب · ورود الخرز', 'nameEn' => 'Al Kawkaba Crepe Abaya · Beaded Flowers', 'fabricAr' => 'كريب', 'fabricEn' => 'Crepe', 'price' => 629, 'salePrice' => 499,
+        'slug' => 'crepe-beaded-flower-abaya', 'nameAr' => 'عباية الكوكبة الكريب · ورود الخرز', 'nameEn' => 'Al Kawkaba Crepe Abaya · Beaded Flowers', 'fabricAr' => 'كريب', 'fabricEn' => 'Crepe', 'price' => 380, 'salePrice' => 320,
         'descAr' => 'عباية سهرة سوداء تتلألأ بتطريز الترتر على الصدر والأكمام.',
         'descEn' => 'A black evening abaya that glimmers with sequin embroidery across the front and sleeves.',
         'detailsAr' => "تطريز ترتر على الصدر\nأكمام مطرزة\nقصة واسعة", 'detailsEn' => "Sequin embroidery across the front\nEmbroidered sleeves\nRelaxed fit",
@@ -160,7 +160,7 @@ $products = [
         'isNew' => true, 'isFeatured' => true, 'isLimited' => false, 'isReady' => false,
     ],
     [
-        'slug' => 'lace-abaya', 'nameAr' => 'عباية الكوكبة الدانتيل', 'nameEn' => 'Al Kawkaba Lace Abaya', 'fabricAr' => 'دانتيل', 'fabricEn' => 'Lace', 'price' => 529, 'salePrice' => null,
+        'slug' => 'lace-abaya', 'nameAr' => 'عباية الكوكبة الدانتيل', 'nameEn' => 'Al Kawkaba Lace Abaya', 'fabricAr' => 'دانتيل', 'fabricEn' => 'Lace', 'price' => 340, 'salePrice' => null,
         'descAr' => 'عباية سوداء انسيابية تزيّن أطرافها وأكمامها دانتيل ناعم.',
         'descEn' => 'A flowing black abaya finished with delicate lace at the hem and sleeves.',
         'detailsAr' => "دانتيل على الأطراف\nأكمام دانتيل\nقصة انسيابية", 'detailsEn' => "Lace hem\nLace sleeves\nFlowing cut",
@@ -169,7 +169,7 @@ $products = [
         'deliveryAr' => 'تُشحن خلال 24 ساعة', 'deliveryEn' => 'Ships within 24 hours',
     ],
     [
-        'slug' => 'satin-keffiyeh-abaya', 'nameAr' => 'عباية الكوكبة الساتان · نقشة الشماغ', 'nameEn' => 'Al Kawkaba Satin Abaya · Keffiyeh Trim', 'fabricAr' => 'ساتان', 'fabricEn' => 'Satin', 'price' => 799, 'salePrice' => null,
+        'slug' => 'satin-keffiyeh-abaya', 'nameAr' => 'عباية الكوكبة الساتان · نقشة الشماغ', 'nameEn' => 'Al Kawkaba Satin Abaya · Keffiyeh Trim', 'fabricAr' => 'ساتان', 'fabricEn' => 'Satin', 'price' => 450, 'salePrice' => null,
         'descAr' => 'عباية سوداء بياقة وأكمام بنقشة الشماغ، تصميم يجمع الأصالة والأناقة العصرية.',
         'descEn' => 'A black abaya with keffiyeh-pattern lapels and cuffs — heritage detail with a modern line.',
         'detailsAr' => "ياقة بنقشة الشماغ\nأكمام بنقشة الشماغ\nإصدار محدود", 'detailsEn' => "Keffiyeh-pattern lapels\nKeffiyeh-pattern cuffs\nLimited edition",
@@ -177,7 +177,7 @@ $products = [
         'isNew' => true, 'isFeatured' => true, 'isLimited' => true, 'isReady' => false, 'stock' => 5,
     ],
     [
-        'slug' => 'satin-embroidered-sleeve-abaya', 'nameAr' => 'عباية الكوكبة الساتان · الأكمام المطرزة', 'nameEn' => 'Al Kawkaba Satin Abaya · Embroidered Sleeves', 'price' => 299, 'salePrice' => null,
+        'slug' => 'satin-embroidered-sleeve-abaya', 'nameAr' => 'عباية الكوكبة الساتان · الأكمام المطرزة', 'nameEn' => 'Al Kawkaba Satin Abaya · Embroidered Sleeves', 'price' => 250, 'salePrice' => null,
         'descAr' => 'عباية من الساتان الأسود بقصة واسعة وأكمام مطرزة.',
         'descEn' => 'A black satin abaya with a relaxed cut and embroidered sleeves.',
         'fabricAr' => 'ساتان', 'fabricEn' => 'Satin',

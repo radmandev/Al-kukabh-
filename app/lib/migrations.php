@@ -59,6 +59,19 @@ function run_migrations(): void
             q("UPDATE `$t` SET `$c` = REPLACE(REPLACE(`$c`, 'تواصلي معنا', 'تواصل معنا'), 'تابعينا', 'تابعنا')");
         }
     };
+    // Nov 2026: prices between 250 and 450. Only where the price is still the previous list price (dashboard edits are kept).
+    $all['2026-11-prices-250-450'] = function (): void {
+        foreach ([
+                ['satin-embroidered-sleeve-abaya', 'misk-abaya', 299, 250, null],
+                ['crepe-embroidered-lapel-abaya', 'diya-abaya', 379, 290, null],
+                ['lace-abaya', 'yasmin-abaya', 529, 340, null],
+                ['crepe-beaded-flower-abaya', 'lulu-abaya', 629, 380, 320],
+                ['satin-sequin-panel-abaya', 'najma-abaya', 699, 410, null],
+                ['satin-keffiyeh-abaya', 'sahar-abaya', 799, 450, null],
+        ] as [$slug, $oldSlug, $was, $price, $sale]) {
+            q('UPDATE products SET price = ?, salePrice = ? WHERE slug IN (?, ?) AND price = ?', [$price, $sale, $slug, $oldSlug, $was]);
+        }
+    };
     $pending = array_diff(array_keys($all), $done);
     if (!$pending) return;
     foreach ($pending as $key) {
