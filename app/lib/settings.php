@@ -48,7 +48,7 @@ function default_settings(): array
 • يرجى التأكد من صحة العنوان ورقم الجوال عند الطلب، فنحن غير مسؤولين عن التأخير الناتج عن بيانات غير صحيحة.
 • في حال تعذّر التسليم يتواصل معكِ فريقنا لترتيب موعد جديد.
 
-لأي استفسار عن الشحن تواصلي معنا عبر واتساب: ‎+967781519343
+لأي استفسار عن الشحن تواصل معنا عبر واتساب: ‎+967781519343
 أو البريد: alkawkabahabaya@gmail.com', 'shippingEn' => 'We ship worldwide 🌍
 
 Wherever you are, your Al Kawkaba abaya arrives carefully wrapped, as it deserves.
@@ -108,7 +108,7 @@ or email alkawkabahabaya@gmail.com', 'returnsAr' => 'رضاكِ يهمّنا �
 • في حالات الاستبدال أو الاسترجاع لغير العيوب، تتحمّل العميلة رسوم الشحن.
 
 كيف تطلبين الاستبدال أو الاسترجاع؟
-١. تواصلي معنا عبر واتساب ‎+967781519343 أو البريد alkawkabahabaya@gmail.com
+١. تواصل معنا عبر واتساب ‎+967781519343 أو البريد alkawkabahabaya@gmail.com
 ٢. أرسلي رقم الطلب وسبب الاستبدال أو الاسترجاع وصورة للقطعة.
 ٣. نرسل لكِ تفاصيل إعادة القطعة، ونتابع معكِ حتى إتمام الطلب.', 'returnsEn' => 'Your satisfaction matters to us 🤍
 

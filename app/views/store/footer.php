@@ -30,7 +30,7 @@ $address = L($s['contact'], 'address', $l);
         <!-- join the Al Kawkaba world on Instagram too -->
         <a href="<?= e($ig) ?>" target="_blank" rel="noopener" class="group mx-auto mt-10 inline-flex items-center gap-3 rounded-full border border-gold-soft/50 px-6 py-3 text-gold-soft transition hover:border-gold-soft hover:bg-gold-soft hover:text-ink">
           <?= icon('instagram', 'h-5 w-5') ?>
-          <span class="text-sm"><?= e($l === 'ar' ? 'تابعينا على إنستغرام' : 'Follow us on Instagram') ?></span>
+          <span class="text-sm"><?= e($l === 'ar' ? 'تابعنا على إنستغرام' : 'Follow us on Instagram') ?></span>
           <span dir="ltr" class="text-sm font-bold"><?= e($igHandle) ?></span>
         </a>
       <?php endif ?>

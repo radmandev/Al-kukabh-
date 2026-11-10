@@ -11,10 +11,11 @@ $items = array_map(fn ($m) => [
 $slide = fn (array $g, bool $priority, string $sizes) => $g['kind'] === 'video'
     ? '<video src="' . e($g['url']) . '"' . ($g['poster'] ? ' poster="' . e(img_url($g['poster'], 1080)) . '"' : '') . ' class="absolute inset-0 h-full w-full object-cover" muted loop playsinline autoplay aria-label="' . e($g['alt']) . '"></video>'
     : img($g['url'], $g['alt'], 'object-cover', $sizes, $priority);
-$acc = array_filter([
-    [$t['description'], L($p, 'desc', $l)], [$t['fabric'], L($p, 'fabric', $l)], [$t['details'], L($p, 'details', $l)],
-    [$t['care'], L($p, 'care', $l)], [$t['delivery'], L($p, 'delivery', $l)],
-], fn ($x) => $x[1] !== '');
+$desc = L($p, 'desc', $l);
+$more = array_filter([
+    $t['fabric'] => L($p, 'fabric', $l), $t['details'] => L($p, 'details', $l),
+    $t['care'] => L($p, 'care', $l), $t['delivery'] => L($p, 'delivery', $l),
+], fn ($v) => $v !== '');
 $n = count($items);
 ?>
 <div class="mx-auto grid max-w-[1600px] gap-8 md:grid-cols-[1.25fr_1fr] md:gap-12 md:px-10 md:py-10 lg:gap-20">
@@ -83,14 +84,17 @@ $n = count($items);
         <?= e($p['availability'] === 'out_of_stock' ? $t['outOfStock'] : ($p['availability'] === 'made_to_order' ? $t['madeToOrder'] : $t['inStock'])) ?>
       </p>
       <div id="buy" class="mt-10"><?= add_to_bag($p, $l) ?></div>
-      <div class="mt-10 divide-y divide-line border-y border-line">
-        <?php foreach (array_values($acc) as $i => [$k, $v]): ?>
-          <details class="group py-5"<?= $i === 0 ? ' open' : '' ?>>
-            <summary class="eyebrow flex cursor-pointer list-none items-center justify-between"><?= e($k) ?><?= icon('plus', 'h-3.5 w-3.5 transition group-open:rotate-45') ?></summary>
-            <p class="mt-4 whitespace-pre-line text-sm leading-7 text-stone"><?= e($v) ?></p>
-          </details>
+      <?php if ($desc !== '' || $more): ?>
+      <!-- everything about the abaya in one section: description, then fabric, details, care, delivery -->
+      <details class="group mt-10 border-y border-line py-5" open>
+        <summary class="eyebrow flex cursor-pointer list-none items-center justify-between"><?= e($t['description']) ?><?= icon('plus', 'h-3.5 w-3.5 transition group-open:rotate-45') ?></summary>
+        <?php if ($desc !== ''): ?><p class="mt-4 whitespace-pre-line text-sm leading-7 text-stone"><?= e($desc) ?></p><?php endif ?>
+        <?php foreach ($more as $k => $v): ?>
+          <h3 class="mt-5 text-sm font-bold text-ink"><?= e($k) ?></h3>
+          <p class="mt-1 whitespace-pre-line text-sm leading-7 text-stone"><?= e($v) ?></p>
         <?php endforeach ?>
-      </div>
+      </details>
+      <?php endif ?>
       <p class="mt-6 text-xs text-stone">SKU <?= e($p['sku']) ?></p>
     </div>
   </div>

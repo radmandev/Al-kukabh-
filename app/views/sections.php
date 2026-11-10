@@ -49,6 +49,8 @@ function render_section(string $type, string $data, string $l, string $currency)
         'values' => sec_values($d, $l),
         'text' => sec_text($d, $l),
         'teaser' => sec_teaser($d, $l),
+        'shipping' => sec_shipping($d, $l),
+        'faq' => sec_faq($d, $l),
         default => '',
     };
 }
@@ -372,4 +374,32 @@ function sec_teaser(array $d, string $l): string
   </div>
 </section>
 <?php return (string) ob_get_clean();
+}
+
+/* ---------- delivery band: Yemen · the Gulf · worldwide ---------- */
+
+function sec_shipping(array $d, string $l): string
+{
+    $h = '';
+    foreach (sec_list($d, 'items') as $it) {
+        $h .= '<li class="px-2 text-center"><span class="display block text-lg leading-tight md:text-2xl">' . e(L($it, 'title', $l)) . '</span>'
+            . (($x = L($it, 'text', $l)) !== '' ? '<span class="mt-1 block text-[11px] text-ivory/60 md:text-xs">' . e($x) . '</span>' : '') . '</li>';
+    }
+    return '<section class="border-y border-gold/40 bg-ink text-ivory"><div class="mx-auto flex max-w-[1200px] flex-col items-center gap-5 px-4 py-8 md:flex-row md:justify-center md:gap-14 md:py-10">'
+        . '<a href="/' . $l . '/policies/shipping" class="flex items-center gap-3 text-gold-soft">' . icon('truck', 'h-7 w-7') . '<span class="text-base font-bold md:text-lg">' . e(L($d, 'title', $l)) . '</span></a>'
+        . '<ul class="grid w-full grid-cols-3 divide-x divide-gold/30 md:flex md:w-auto md:gap-6">' . $h . '</ul></div></section>';
+}
+
+/* ---------- FAQ ---------- */
+
+function sec_faq(array $d, string $l): string
+{
+    $h = '';
+    foreach (sec_list($d, 'items') as $it) {
+        $h .= '<details class="group py-5"><summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-bold md:text-lg">'
+            . e(L($it, 'q', $l)) . icon('plus', 'h-4 w-4 shrink-0 text-gold transition group-open:rotate-45') . '</summary>'
+            . '<p class="mt-3 whitespace-pre-line text-sm leading-7 text-stone md:text-base md:leading-8">' . e(L($it, 'a', $l)) . '</p></details>';
+    }
+    return '<section id="faq" class="py-16 md:py-28">' . sec_head($d, $l, true)
+        . '<div class="mx-auto mt-10 max-w-3xl divide-y divide-line border-y border-line px-5 md:mt-14">' . $h . '</div></section>';
 }

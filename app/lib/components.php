@@ -62,8 +62,12 @@ function price_html(array $p, string $l, string $currency, string $class = ''): 
 {
     if (!(float) $p['price']) return ''; // price 0 = not set yet in admin
     $sale = $p['salePrice'];
-    return '<span class="flex flex-wrap items-baseline gap-2 ' . e($class) . '"><span>' . e(money($sale ?? $p['price'], $currency, $l)) . '</span>'
-        . ($sale !== null ? '<s class="text-stone text-[.9em]" aria-label="was">' . e(money($p['price'], $currency, $l)) . '</s>' : '') . '</span>';
+    if ($sale === null) return '<span class="flex flex-wrap items-baseline gap-2 ' . e($class) . '"><span>' . e(money($p['price'], $currency, $l)) . '</span></span>';
+    $off = (int) round(100 - $sale / $p['price'] * 100);
+    // discounted pieces stand out: sale price and the % off in red
+    return '<span class="flex flex-wrap items-baseline gap-2 ' . e($class) . '"><span class="font-bold text-red-700">' . e(money($sale, $currency, $l)) . '</span>'
+        . '<s class="text-stone text-[.9em]" aria-label="was">' . e(money($p['price'], $currency, $l)) . '</s>'
+        . ($off > 0 ? '<span class="rounded-full bg-red-700 px-2 py-0.5 text-[.75em] font-bold text-white" dir="ltr">-' . $off . '%</span>' : '') . '</span>';
 }
 
 function product_card(array $p, string $l, string $currency, bool $priority = false, bool $showDelivery = false): string

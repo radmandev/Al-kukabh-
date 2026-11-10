@@ -52,6 +52,14 @@ function section_types(): array
             ...$bi('title', 'Section title'),
             ['key' => 'items', 'label' => 'Values', 'kind' => 'list', 'fields' => [...$bi('title', 'Title'), ...$bi('text', 'Text', 'textarea')]],
         ]],
+        'shipping' => ['label' => 'Delivery band (where we deliver)', 'fields' => [
+            ...$bi('title', 'Title'),
+            ['key' => 'items', 'label' => 'Destinations', 'kind' => 'list', 'fields' => [...$bi('title', 'Place'), ...$bi('text', 'Delivery time')]],
+        ]],
+        'faq' => ['label' => 'FAQ (questions & answers)', 'fields' => [
+            ...$bi('eyebrow', 'Small label'), ...$bi('title', 'Title'),
+            ['key' => 'items', 'label' => 'Questions', 'kind' => 'list', 'fields' => [...$bi('q', 'Question'), ...$bi('a', 'Answer', 'textarea')]],
+        ]],
         'teaser' => ['label' => 'Coming soon teaser (upcoming collection)', 'fields' => [
             ...$bi('eyebrow', 'Small label'), ...$bi('title', 'Title'), ...$bi('year', 'Season / year'), ...$bi('soon', 'Coming soon word'),
             ...$bi('text', 'Text', 'textarea'),
